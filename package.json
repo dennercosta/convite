@@ -1,0 +1,7 @@
+{
+  "name": "convite-brasileiro", "version": "1.0.0", "private": true,
+  "description": "Convite brasileiro inspirado na estrutura do Ulems, com painel e SQLite local",
+  "type": "module", "engines": {"node": ">=22.13.0"},
+  "scripts": {"start": "node server.mjs", "configurar": "node scripts/configurar.mjs", "backup": "node scripts/backup.mjs"},
+  "license": "MIT"
+}
