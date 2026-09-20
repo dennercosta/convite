@@ -22,5 +22,5 @@ window.CASAMENTO = {
   whatsapp: "", // DDI + DDD + número, apenas dígitos: 55...
   fotoCapa: "", // Ex.: /fotos/casal.jpg — coloque o arquivo em public/fotos/.
   fotos: [], // Ex.: [{ src: "/fotos/casal.jpg", legenda: "Nosso momento" }]
-  musica: "./assets/instrumental-romantico.mp3"
+  musica: "" // Ex.: /musica.mp3. Use uma faixa que você tenha direito de compartilhar.
 };

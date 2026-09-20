@@ -12,12 +12,7 @@ text('convite', c.convite); text('mensagem-fe', c.mensagemFe); text('referencia'
 const guest = new URLSearchParams(location.search).get('para') || new URLSearchParams(location.search).get('to');
 if (guest && $('convidado')) text('convidado', guest.slice(0, 120));
 let audio;
-if (c.musica) {
-  audio = new Audio(c.musica);
-  audio.loop = true;
-  audio.preload = 'auto';
-  audio.volume = 0.24;
-}
+if (c.musica) { audio = new Audio(c.musica); audio.loop = true; }
 $('abrir').addEventListener('click', () => {
   const abertura = $('abertura');
   const laco = $('laco');
