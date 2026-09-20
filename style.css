@@ -17,15 +17,15 @@ body.convite-fechado{overflow:hidden;overscroll-behavior:none}
 .capa-cena{position:absolute;top:0;width:var(--largura-capa);height:100%;overflow:hidden}
 .capa-cena>img{position:absolute;inset:0;width:100%;max-width:none;height:100%;object-fit:cover;object-position:center;user-select:none;pointer-events:none}
 .capa-elemento{will-change:transform}
-.folhas-superiores{transform-origin:50% 0;animation:folhasSuperiores 7.8s cubic-bezier(.45,0,.55,1) infinite}
-.folhas-inferiores{transform-origin:50% 100%;animation:folhasInferiores 9.4s cubic-bezier(.45,0,.55,1) infinite}
+.folhas-superiores{transform-origin:50% 0;animation:folhasSuperiores 6.8s cubic-bezier(.45,0,.55,1) infinite}
+.folhas-inferiores{transform-origin:50% 100%;animation:folhasInferiores 8.2s cubic-bezier(.45,0,.55,1) infinite}
 .capa-folha-esquerda{left:0;transform-origin:left center}
 .capa-folha-esquerda .capa-cena{left:0}
 .capa-folha-esquerda::after{background:linear-gradient(90deg,transparent 60%,#14283f55)}
 .capa-folha-direita{right:0;transform-origin:right center}
 .capa-folha-direita .capa-cena{right:0}
 .capa-folha-direita::after{background:linear-gradient(270deg,transparent 60%,#14283f55)}
-.laco-animacao{position:absolute;z-index:4;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;pointer-events:none;user-select:none;transition:opacity .2s ease;will-change:opacity}
+.laco-animacao{position:absolute;z-index:4;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;pointer-events:none;user-select:none;transform-origin:50% 50%;animation:lacoRespira 3.8s ease-in-out infinite;transition:opacity .2s ease;will-change:opacity,transform}
 .convite-cta{position:absolute;z-index:5;top:51%;left:50%;color:#6d7139;text-align:center;white-space:nowrap;transform:translate(-50%,-50%);transition:opacity .28s ease,transform .38s ease;pointer-events:none;text-shadow:0 1px 0 #fff,0 0 12px #fff}
 .convite-cta span{display:block;font:600 clamp(10px,1.2vw,13px)/1 var(--sans);letter-spacing:.34em;padding-left:.34em;animation:ctaRespira 2.8s ease-in-out infinite}
 .convite-cta::after{content:'';display:block;width:38px;height:1px;margin:12px auto 0;background:currentColor;box-shadow:0 0 7px #8a8d4c80;transform-origin:center;animation:ctaLinha 2.8s ease-in-out infinite}
@@ -37,12 +37,13 @@ body.convite-fechado{overflow:hidden;overscroll-behavior:none}
 .abertura.abrindo .capa-folha-esquerda{transform:rotateY(-104deg);filter:brightness(.82)}
 .abertura.abrindo .capa-folha-direita{transform:rotateY(104deg);filter:brightness(.82)}
 .abertura.abrindo .capa-folha::after{opacity:1}
-.abertura.desatando .capa-elemento,.abertura.abrindo .capa-elemento{animation-play-state:paused}
+.abertura.desatando .capa-elemento,.abertura.abrindo .capa-elemento,.abertura.desatando .laco-animacao{animation-play-state:paused}
 .abertura.desatando .convite-cta,.abertura.abrindo .convite-cta{opacity:0;transform:translate(-50%,-58%) scale(.98)}
 .abertura.abrindo .laco-animacao{opacity:0}
 .abertura.desatando .acionar-abertura,.abertura.abrindo .acionar-abertura{pointer-events:none}
-@keyframes folhasSuperiores{0%,100%{transform:translate3d(-.18%,0,0) rotate(-.22deg) scale(1.006)}50%{transform:translate3d(.22%,.12%,0) rotate(.24deg) scale(1.009)}}
-@keyframes folhasInferiores{0%,100%{transform:translate3d(.2%,.08%,0) rotate(.2deg) scale(1.007)}50%{transform:translate3d(-.2%,-.08%,0) rotate(-.24deg) scale(1.01)}}
+@keyframes folhasSuperiores{0%,100%{transform:translate3d(-.42%,-.04%,0) rotate(-.48deg) scale(1.012)}34%{transform:translate3d(.16%,.22%,0) rotate(.16deg) scale(1.017)}68%{transform:translate3d(.44%,.06%,0) rotate(.5deg) scale(1.014)}}
+@keyframes folhasInferiores{0%,100%{transform:translate3d(.4%,.14%,0) rotate(.44deg) scale(1.013)}38%{transform:translate3d(-.12%,-.2%,0) rotate(-.14deg) scale(1.018)}72%{transform:translate3d(-.42%,.02%,0) rotate(-.48deg) scale(1.015)}}
+@keyframes lacoRespira{0%,100%{transform:translate3d(-.12%,.08%,0) scale(1.002)}48%{transform:translate3d(.12%,-.16%,0) scale(1.012)}76%{transform:translate3d(.04%,.04%,0) scale(1.006)}}
 @keyframes ctaRespira{0%,100%{opacity:.62;transform:translateY(0)}50%{opacity:1;transform:translateY(-2px)}}
 @keyframes ctaLinha{0%,100%{opacity:.38;transform:scaleX(.58)}50%{opacity:.9;transform:scaleX(1)}}
-@media(prefers-reduced-motion:reduce){.convite-cta span,.convite-cta::after,.capa-elemento{animation:none!important}.abertura.abrindo .capa-folha{transform:none!important;opacity:0}.abertura.abrindo::before{opacity:0}}
+@media(prefers-reduced-motion:reduce){.convite-cta span,.convite-cta::after,.capa-elemento,.laco-animacao{animation:none!important}.abertura.abrindo .capa-folha{transform:none!important;opacity:0}.abertura.abrindo::before{opacity:0}}
