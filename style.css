@@ -200,9 +200,11 @@ body.convite-fechado{overflow:hidden;overscroll-behavior:none}
   transform-origin:0 50%;
   animation:asaDireita .42s ease-in-out infinite alternate;
 }
-.passaro-1{animation:vooUm 10.8s cubic-bezier(.35,.1,.65,.9) 3.2s infinite}
-.passaro-2{width:18px;height:9px;animation:vooDois 12.4s cubic-bezier(.35,.1,.65,.9) 5.1s infinite}
-.passaro-3{width:14px;height:7px;color:#7c6d56;animation:vooTres 14.2s cubic-bezier(.35,.1,.65,.9) 7.4s infinite}
+.passaro-2{width:18px;height:9px}
+.passaro-3{width:14px;height:7px;color:#7c6d56}
+.conteudo-aberto .passaro-1{animation:vooUm 10.8s cubic-bezier(.35,.1,.65,.9) 3.2s infinite}
+.conteudo-aberto .passaro-2{animation:vooDois 12.4s cubic-bezier(.35,.1,.65,.9) 5.1s infinite}
+.conteudo-aberto .passaro-3{animation:vooTres 14.2s cubic-bezier(.35,.1,.65,.9) 7.4s infinite}
 
 .conteudo-aberto .apresentacao-arte{
   animation:apresentacaoRespira 8s ease-in-out 3.2s infinite alternate;
@@ -303,10 +305,10 @@ body.convite-fechado{overflow:hidden;overscroll-behavior:none}
   100%{left:108%;top:18%;opacity:0;transform:rotate(24deg) scale(1)}
 }
 @keyframes vooTres{
-  0%,16%{left:53%;top:69%;opacity:0;transform:rotate(-4deg) scale(.42)}
+  0%,16%{left:55%;top:71%;opacity:0;transform:rotate(8deg) scale(.42)}
   22%{opacity:.55}
-  64%{left:50%;top:33%;opacity:.65;transform:rotate(-8deg) scale(.68)}
-  100%{left:42%;top:-7%;opacity:0;transform:rotate(-12deg) scale(.86)}
+  64%{left:72%;top:39%;opacity:.65;transform:rotate(15deg) scale(.68)}
+  100%{left:91%;top:-7%;opacity:0;transform:rotate(19deg) scale(.86)}
 }
 @media(max-width:390px){
   .hero.hero-convite{padding-bottom:calc(56px + env(safe-area-inset-bottom))}
