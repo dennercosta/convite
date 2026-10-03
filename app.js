@@ -1,6 +1,6 @@
 const c = window.CASAMENTO;
 const $ = id => document.getElementById(id);
-const text = (id, value) => { $(id).textContent = value; };
+const text = (id, value) => { const el = $(id); if (el) el.textContent = value; };
 function external(id, url) {
   try { const parsed = new URL(url); if (parsed.protocol !== 'https:') return; $(id).href = parsed.href; $(id).hidden = false; } catch {}
 }
