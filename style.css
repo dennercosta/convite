@@ -68,7 +68,7 @@ body.convite-fechado{overflow:hidden;overscroll-behavior:none}
 .hero-divisor i{display:block;flex:1;height:1px;background:linear-gradient(90deg,transparent,#72889d99)}
 .hero-divisor i:last-child{background:linear-gradient(90deg,#72889d99,transparent)}
 .hero-divisor b{font-size:9px;font-weight:400}
-.hero.hero-convite .hero-nomes{margin:0;white-space:nowrap;font:500 clamp(39px,11vw,67px)/1.02 var(--serif);letter-spacing:-.035em;color:#263f5b;text-shadow:0 1px 0 #fff}
+.hero.hero-convite .hero-nomes{margin:0;white-space:nowrap;font:500 clamp(39px,11vw,54px)/1.02 var(--serif);letter-spacing:-.035em;color:#263f5b;text-shadow:0 1px 0 #fff}
 .hero-nomes em{display:inline-block;margin:0 .07em;font-size:.72em;font-weight:400;color:#667d91}
 .hero-data{display:flex;align-items:center;justify-content:center;gap:13px;margin:31px 0 3px;font:600 clamp(14px,4vw,18px)/1 var(--sans);letter-spacing:.17em;color:#344e69}
 .hero-data i{font-style:normal;font-weight:400;color:#8797a6}
