@@ -139,6 +139,20 @@ body.convite-fechado{overflow:hidden;overscroll-behavior:none}
   box-shadow:0 0 28px #efbc7048,0 0 70px #dba05a26;
   animation:solRespira 8.8s ease-in-out infinite alternate;
 }
+.sol-poente::before{
+  content:'';
+  position:absolute;
+  left:38%;
+  top:38%;
+  width:24%;
+  aspect-ratio:1;
+  border-radius:50%;
+  opacity:.72;
+  mix-blend-mode:screen;
+  filter:blur(.7px);
+  background:#ffeec3;
+  box-shadow:0 0 10px #ffd88b99,0 0 24px #efb76a55;
+}
 .sol-poente::after{
   content:'';
   position:absolute;
