@@ -123,26 +123,67 @@ body.convite-fechado{overflow:hidden;overscroll-behavior:none}
   overflow:visible;
 }
 .natureza-animada{z-index:2;opacity:0}
+.sol-poente{
+  position:absolute;
+  z-index:0;
+  left:36%;
+  top:50.5%;
+  width:25%;
+  aspect-ratio:1;
+  border-radius:50%;
+  opacity:.46;
+  mix-blend-mode:soft-light;
+  filter:blur(.8px);
+  background:
+    radial-gradient(circle,#fff4cb 0 7%,#f3c978aa 8% 17%,#e4a75a45 28%,#d78f3520 44%,transparent 70%);
+  box-shadow:0 0 28px #efbc7048,0 0 70px #dba05a26;
+  animation:solRespira 8.8s ease-in-out infinite alternate;
+}
+.sol-poente::after{
+  content:'';
+  position:absolute;
+  inset:-48%;
+  border-radius:50%;
+  background:radial-gradient(circle,#efb86728 0,transparent 65%);
+  animation:auraDourada 12s ease-in-out infinite alternate;
+}
+.textura-atmosfera{
+  position:absolute;
+  z-index:1;
+  inset:0;
+  opacity:.13;
+  mix-blend-mode:multiply;
+  -webkit-mask-image:radial-gradient(ellipse at 50% 54%,#000 12%,#000b 63%,transparent 100%);
+  mask-image:radial-gradient(ellipse at 50% 54%,#000 12%,#000b 63%,transparent 100%);
+  background-image:
+    radial-gradient(circle at 20% 30%,#8d6d3b44 0 .65px,transparent .9px),
+    radial-gradient(circle at 70% 60%,#c49b5f3d 0 .55px,transparent .85px),
+    repeating-linear-gradient(105deg,transparent 0 13px,#8c6a3820 14px,transparent 15px 31px);
+  background-size:19px 23px,27px 21px,43px 43px;
+  animation:texturaFlutua 20s linear infinite alternate;
+}
 .vegetacao{
   position:absolute;
   inset:0;
+  z-index:2;
   background:url('./assets/apresentacao-moldura.webp') center/100% 100% no-repeat;
+  filter:saturate(1.015);
   will-change:transform;
 }
 .vegetacao-topo{
   clip-path:polygon(43% 0,100% 0,100% 42%,76% 36%,58% 25%);
   transform-origin:86% 18%;
-  animation:plantaTopo 5.8s ease-in-out infinite alternate;
+  animation:plantaTopo 4.7s cubic-bezier(.45,.05,.55,.95) infinite alternate;
 }
 .vegetacao-esquerda{
   clip-path:polygon(0 48%,34% 50%,40% 84%,0 88%);
   transform-origin:19% 76%;
-  animation:plantaEsquerda 6.7s ease-in-out -.8s infinite alternate;
+  animation:plantaEsquerda 5.25s cubic-bezier(.45,.05,.55,.95) -.8s infinite alternate;
 }
 .vegetacao-direita{
   clip-path:polygon(67% 42%,100% 39%,100% 88%,63% 82%);
   transform-origin:86% 69%;
-  animation:plantaDireita 7.3s ease-in-out -1.7s infinite alternate;
+  animation:plantaDireita 5.9s cubic-bezier(.45,.05,.55,.95) -1.7s infinite alternate;
 }
 .agua-viva{
   position:absolute;
@@ -152,24 +193,40 @@ body.convite-fechado{overflow:hidden;overscroll-behavior:none}
   width:66%;
   height:30%;
   border-radius:26% 26% 43% 43%;
-  opacity:.38;
+  opacity:.5;
   overflow:hidden;
   mix-blend-mode:soft-light;
+  filter:saturate(1.08) contrast(1.03);
   -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 16%,#000 82%,transparent 100%);
   mask-image:linear-gradient(to bottom,transparent 0,#000 16%,#000 82%,transparent 100%);
   background:
     radial-gradient(ellipse at 45% 22%,#fff9 0 1%,transparent 18%),
     repeating-linear-gradient(0deg,transparent 0 8px,#fff8 9px,#9bc0c966 10px,transparent 12px);
   background-size:130% 100%,100% 34px;
-  animation:aguaOndula 5.2s ease-in-out infinite alternate;
+  animation:aguaOndula 3.9s ease-in-out infinite alternate;
+}
+.agua-viva::before{
+  content:'';
+  position:absolute;
+  z-index:1;
+  left:30%;
+  top:-8%;
+  width:30%;
+  height:112%;
+  opacity:.32;
+  filter:blur(5px);
+  transform-origin:50% 0;
+  background:linear-gradient(to bottom,#ffe8a0aa 0,#efb86d55 28%,transparent 85%);
+  clip-path:polygon(42% 0,58% 0,100% 100%,0 100%);
+  animation:reflexoDourado 5.8s ease-in-out infinite alternate;
 }
 .agua-viva::after{
   content:'';
   position:absolute;
   inset:9% 3% 5%;
-  background:repeating-radial-gradient(ellipse at 50% 0,transparent 0 13px,#fff8 14px,transparent 16px 23px);
-  opacity:.42;
-  animation:reflexoAgua 4.6s linear infinite;
+  background:repeating-radial-gradient(ellipse at 50% 0,transparent 0 11px,#fff9 12px,transparent 14px 21px);
+  opacity:.48;
+  animation:reflexoAgua 3.7s linear infinite;
 }
 .passaros-cena{z-index:6}
 .passaro{
@@ -268,26 +325,46 @@ body.convite-fechado{overflow:hidden;overscroll-behavior:none}
   0%{opacity:1;filter:blur(0);transform:translate3d(0,0,0) rotate(-1.8deg)}
   100%{opacity:1;filter:blur(0);transform:translate3d(0,-2px,0) rotate(1.8deg)}
 }
+@keyframes solRespira{
+  0%{opacity:.36;transform:translate3d(-2px,1px,0) scale(.96);filter:blur(1.2px)}
+  100%{opacity:.56;transform:translate3d(2px,-1px,0) scale(1.06);filter:blur(.4px)}
+}
+@keyframes auraDourada{
+  0%{opacity:.48;transform:scale(.92)}
+  100%{opacity:.8;transform:scale(1.09)}
+}
+@keyframes texturaFlutua{
+  0%{background-position:0 0,0 0,0 0;transform:translate3d(0,0,0)}
+  100%{background-position:24px -18px,-20px 25px,31px 14px;transform:translate3d(1px,-2px,0)}
+}
 @keyframes plantaTopo{
-  0%{transform:rotate(-.2deg) translate3d(0,0,0)}
-  100%{transform:rotate(.65deg) translate3d(-1px,1px,0)}
+  0%{transform:rotate(-.55deg) translate3d(1px,-1px,0) scale(1)}
+  48%{transform:rotate(.35deg) translate3d(-1px,1px,0) scale(1.002)}
+  100%{transform:rotate(1.15deg) translate3d(-2px,2px,0) scale(1.004)}
 }
 @keyframes plantaEsquerda{
-  0%{transform:rotate(-.45deg) translate3d(0,0,0)}
-  100%{transform:rotate(.75deg) translate3d(1px,-1px,0)}
+  0%{transform:rotate(-.9deg) translate3d(-1px,1px,0) scale(1)}
+  50%{transform:rotate(.35deg) translate3d(1px,-1px,0) scale(1.002)}
+  100%{transform:rotate(1.45deg) translate3d(2px,-2px,0) scale(1.005)}
 }
 @keyframes plantaDireita{
-  0%{transform:rotate(.25deg) translate3d(0,0,0)}
-  100%{transform:rotate(-.6deg) translate3d(-1px,0,0)}
+  0%{transform:rotate(.65deg) translate3d(1px,0,0) scale(1)}
+  50%{transform:rotate(-.25deg) translate3d(-1px,-1px,0) scale(1.002)}
+  100%{transform:rotate(-1.25deg) translate3d(-2px,1px,0) scale(1.004)}
 }
 @keyframes aguaOndula{
-  0%{background-position:0 0,0 0;transform:scaleX(.995) translateY(0)}
-  100%{background-position:12% 2%,18px 8px;transform:scaleX(1.008) translateY(1px)}
+  0%{background-position:0 0,0 0;transform:scaleX(.992) translate3d(-1px,0,0)}
+  50%{background-position:6% 1%,9px 5px;transform:scaleX(1.006) translate3d(1px,1px,0)}
+  100%{background-position:14% 3%,22px 10px;transform:scaleX(.997) translate3d(0,2px,0)}
+}
+@keyframes reflexoDourado{
+  0%{opacity:.2;transform:skewX(-3deg) scaleX(.72) translateX(-4px)}
+  100%{opacity:.42;transform:skewX(3deg) scaleX(1.08) translateX(5px)}
 }
 @keyframes reflexoAgua{
-  0%{transform:translate3d(-5px,0,0);opacity:.28}
-  50%{opacity:.55}
-  100%{transform:translate3d(8px,7px,0);opacity:.25}
+  0%{transform:translate3d(-7px,0,0) scaleX(.98);opacity:.32}
+  50%{transform:translate3d(2px,4px,0) scaleX(1.03);opacity:.62}
+  100%{transform:translate3d(10px,8px,0) scaleX(.99);opacity:.3}
 }
 @keyframes asaEsquerda{from{transform:rotate(13deg)}to{transform:rotate(-22deg)}}
 @keyframes asaDireita{from{transform:rotate(-13deg)}to{transform:rotate(22deg)}}
@@ -316,7 +393,7 @@ body.convite-fechado{overflow:hidden;overscroll-behavior:none}
   .passaro{transform:scale(.86)}
 }
 @media(prefers-reduced-motion:reduce){
-  .apresentacao-arte,.arte-moldura,.arte-camada,.natureza-animada,.vegetacao,.agua-viva,.agua-viva::after,.passaro,.passaro::before,.passaro::after{
+  .apresentacao-arte,.arte-moldura,.arte-camada,.natureza-animada,.sol-poente,.sol-poente::after,.textura-atmosfera,.vegetacao,.agua-viva,.agua-viva::before,.agua-viva::after,.passaro,.passaro::before,.passaro::after{
     opacity:1!important;
     filter:none!important;
     transform:none!important;
