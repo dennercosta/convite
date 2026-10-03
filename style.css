@@ -417,3 +417,42 @@ body.convite-fechado{overflow:hidden;overscroll-behavior:none}
   .agua-viva{opacity:.16!important}
 }
 
+
+
+/* Refinamento: moldura estática, água original e movimentos naturais discretos */
+.agua-viva{display:none!important}
+.conteudo-aberto .apresentacao-arte{
+  animation:none!important;
+  transform:none!important;
+}
+.conteudo-aberto .arte-moldura{
+  animation:molduraEntradaSuave .9s ease-out both;
+}
+.vegetacao-topo{animation-duration:7.8s}
+.vegetacao-esquerda{animation-duration:8.6s}
+.vegetacao-direita{animation-duration:9.4s}
+.textura-atmosfera{
+  opacity:.09;
+  animation-duration:32s;
+}
+.sol-poente{animation-duration:12s}
+@keyframes molduraEntradaSuave{
+  from{opacity:0}
+  to{opacity:1}
+}
+@keyframes plantaTopo{
+  0%{transform:rotate(-.18deg) translate3d(0,0,0)}
+  100%{transform:rotate(.42deg) translate3d(-1px,1px,0)}
+}
+@keyframes plantaEsquerda{
+  0%{transform:rotate(-.3deg) translate3d(0,0,0)}
+  100%{transform:rotate(.55deg) translate3d(1px,-1px,0)}
+}
+@keyframes plantaDireita{
+  0%{transform:rotate(.2deg) translate3d(0,0,0)}
+  100%{transform:rotate(-.45deg) translate3d(-1px,0,0)}
+}
+@keyframes florRespira{
+  0%{opacity:1;filter:blur(0);transform:translate3d(0,0,0) rotate(-.7deg)}
+  100%{opacity:1;filter:blur(0);transform:translate3d(0,-1px,0) rotate(.7deg)}
+}
