@@ -180,7 +180,7 @@ body.convite-fechado{overflow:hidden;overscroll-behavior:none}
   position:absolute;
   inset:0;
   z-index:2;
-  background:url('./assets/apresentacao-moldura.webp') center/100% 100% no-repeat;
+  background:url('./assets/apresentacao-moldura-v2.webp') center/100% 100% no-repeat;
   filter:saturate(1.015);
   will-change:transform;
 }
@@ -455,4 +455,51 @@ body.convite-fechado{overflow:hidden;overscroll-behavior:none}
 @keyframes florRespira{
   0%{opacity:1;filter:blur(0);transform:translate3d(0,0,0) rotate(-.7deg)}
   100%{opacity:1;filter:blur(0);transform:translate3d(0,-1px,0) rotate(.7deg)}
+}
+
+
+/* Nova moldura transparente e fundo arenoso */
+.hero.hero-convite::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  opacity:.18;
+  mix-blend-mode:multiply;
+  background-image:
+    radial-gradient(circle at 18% 32%,#997b4c4a 0 .55px,transparent .9px),
+    radial-gradient(circle at 72% 68%,#c7a87042 0 .5px,transparent .85px),
+    radial-gradient(circle at 46% 84%,#8f71422e 0 .45px,transparent .8px),
+    repeating-linear-gradient(112deg,transparent 0 19px,#aa895528 20px,transparent 21px 39px);
+  background-size:17px 19px,23px 21px,29px 25px,47px 47px;
+  -webkit-mask-image:radial-gradient(ellipse at center,#000 18%,#000d 70%,transparent 115%);
+  mask-image:radial-gradient(ellipse at center,#000 18%,#000d 70%,transparent 115%);
+  animation:areiaFundo 34s linear infinite alternate;
+}
+.apresentacao-arte{
+  width:min(calc(100% - 20px),calc((100svh - 68px - env(safe-area-inset-bottom))*1080/1714),575px);
+  aspect-ratio:1080/1714;
+}
+.arte-flor{left:48.148%;top:19.779%;width:3.704%}
+.arte-frase{left:29.444%;top:24.388%;width:45.741%}
+.arte-nomes{left:0;top:30.455%;width:100%}
+.arte-divisor-data{left:36.667%;top:48.483%;width:27.037%}
+.arte-data{left:22.87%;top:50.875%;width:54.444%}
+.arte-sabado{left:40.37%;top:54.668%;width:20.556%}
+.arte-divisor-final{left:41.667%;top:57.293%;width:17.963%}
+.passaros-cena{z-index:3}
+.textura-atmosfera{display:none!important}
+@keyframes areiaFundo{
+  0%{background-position:0 0,0 0,0 0,0 0;opacity:.13}
+  50%{opacity:.18}
+  100%{background-position:20px -14px,-17px 18px,13px 9px,28px 16px;opacity:.15}
+}
+@media(max-width:390px){
+  .apresentacao-arte{
+    width:min(calc(100% - 16px),calc((100svh - 64px - env(safe-area-inset-bottom))*1080/1714),575px);
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .hero.hero-convite::after{animation:none!important}
 }
