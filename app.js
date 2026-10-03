@@ -29,6 +29,7 @@ $('abrir').addEventListener('click', () => {
       abertura.hidden = true;
       document.body.classList.remove('convite-fechado');
       $('conteudo').inert = false;
+      $('conteudo').classList.add('conteudo-aberto');
       $('inicio').tabIndex = -1;
       $('inicio').focus({ preventScroll: true });
       if (audio) $('musica').hidden = false;

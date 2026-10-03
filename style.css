@@ -47,3 +47,34 @@ body.convite-fechado{overflow:hidden;overscroll-behavior:none}
 @keyframes ctaRespira{0%,100%{opacity:.62;transform:translateY(0)}50%{opacity:1;transform:translateY(-2px)}}
 @keyframes ctaLinha{0%,100%{opacity:.38;transform:scaleX(.58)}50%{opacity:.9;transform:scaleX(1)}}
 @media(prefers-reduced-motion:reduce){.convite-cta span,.convite-cta::after,.capa-elemento,.laco-animacao{animation:none!important}.abertura.abrindo .capa-folha{transform:none!important;opacity:0}.abertura.abrindo::before{opacity:0}}
+
+
+/* Primeira apresentação após a abertura do convite */
+.hero.hero-convite{position:relative;isolation:isolate;min-height:100vh;min-height:100svh;overflow:hidden;padding:82px 34px 118px;background:radial-gradient(circle at 50% 30%,#fff 0,#f7f8f6 38%,#e9eff4 100%)}
+.hero-convite::before{content:'D & N';position:absolute;z-index:-2;top:50%;left:50%;transform:translate(-50%,-51%);white-space:nowrap;font:italic clamp(108px,32vw,180px)/1 var(--serif);letter-spacing:-.07em;color:#526f910d}
+.hero-convite::after{content:'';position:absolute;z-index:-1;top:50%;left:50%;width:min(78vw,390px);aspect-ratio:1/1.28;transform:translate(-50%,-51%);border:1px solid #8197aa2b;border-radius:50% 50% 46% 46%;box-shadow:0 0 0 11px #fff4}
+.hero-entrada{opacity:0;filter:blur(3px);transform:translate3d(0,18px,0)}
+.conteudo-aberto .hero-entrada{animation:heroRevela .86s cubic-bezier(.2,.72,.25,1) both}
+.conteudo-aberto .hero-entrada.etapa-1{animation-delay:.12s}
+.conteudo-aberto .hero-entrada.etapa-2{animation-delay:.44s}
+.conteudo-aberto .hero-entrada.etapa-3{animation-delay:.72s}
+.conteudo-aberto .hero-entrada.etapa-4{animation-name:heroNomes;animation-duration:1.08s;animation-delay:.92s}
+.conteudo-aberto .hero-entrada.etapa-5{animation-delay:1.38s}
+.conteudo-aberto .hero-entrada.etapa-6{animation-delay:1.66s}
+.conteudo-aberto .hero-entrada.etapa-7{animation-delay:1.98s}
+.hero-familias{display:block;margin:0 0 8px;font:600 clamp(9px,2.5vw,11px)/1.5 var(--sans);letter-spacing:.25em;color:#526f91}
+.hero-convidam{display:block;margin:0 0 22px;font:italic clamp(19px,5vw,25px)/1.25 var(--serif);color:#52677e}
+.hero-divisor{display:flex;align-items:center;justify-content:center;gap:11px;width:min(210px,65%);margin:0 auto 20px;color:#72889d}
+.hero-divisor i{display:block;flex:1;height:1px;background:linear-gradient(90deg,transparent,#72889d99)}
+.hero-divisor i:last-child{background:linear-gradient(90deg,#72889d99,transparent)}
+.hero-divisor b{font-size:9px;font-weight:400}
+.hero.hero-convite .hero-nomes{margin:0;white-space:nowrap;font:500 clamp(39px,11vw,67px)/1.02 var(--serif);letter-spacing:-.035em;color:#263f5b;text-shadow:0 1px 0 #fff}
+.hero-nomes em{display:inline-block;margin:0 .07em;font-size:.72em;font-weight:400;color:#667d91}
+.hero-data{display:flex;align-items:center;justify-content:center;gap:13px;margin:31px 0 3px;font:600 clamp(14px,4vw,18px)/1 var(--sans);letter-spacing:.17em;color:#344e69}
+.hero-data i{font-style:normal;font-weight:400;color:#8797a6}
+.hero-dia{margin:10px 0 0;font:600 9px/1 var(--sans);letter-spacing:.44em;padding-left:.44em;color:#667d91}
+.hero.hero-convite .descer{margin-top:52px;color:#526f91}
+@keyframes heroRevela{0%{opacity:0;filter:blur(3px);transform:translate3d(0,18px,0)}100%{opacity:1;filter:blur(0);transform:translate3d(0,0,0)}}
+@keyframes heroNomes{0%{opacity:0;filter:blur(5px);transform:translate3d(0,15px,0) scale(.965);letter-spacing:.02em}100%{opacity:1;filter:blur(0);transform:translate3d(0,0,0) scale(1);letter-spacing:-.035em}}
+@media(max-width:390px){.hero.hero-convite{padding-inline:20px}.hero.hero-convite .hero-nomes{font-size:clamp(35px,10.7vw,42px)}.hero-data{gap:9px}}
+@media(prefers-reduced-motion:reduce){.hero-entrada{opacity:1!important;filter:none!important;transform:none!important;animation:none!important}}
