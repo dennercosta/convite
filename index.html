@@ -8,7 +8,8 @@
   <link rel="preload" as="image" href="./assets/folhas-superiores.webp" type="image/webp">
   <link rel="preload" as="image" href="./assets/folhas-inferiores.webp" type="image/webp">
   <link rel="preload" as="image" href="./assets/laco-inicial.webp" type="image/webp">
-  <link rel="stylesheet" href="./style.css?v=188de2d7"><script defer src="./config.js"></script><script defer src="./app.js?v=4a5bb488"></script>
+  <link rel="preload" as="image" href="./assets/apresentacao-moldura.webp" type="image/webp">
+  <link rel="stylesheet" href="./style.css?v=arte-20261003"><script defer src="./config.js"></script><script defer src="./app.js?v=4a5bb488"></script>
 </head>
 <body class="convite-fechado">
   <div id="abertura" class="abertura" role="dialog" aria-modal="true" aria-label="Convite de casamento de Denner e Nágila">
@@ -38,13 +39,18 @@
     <aside class="lateral"><a href="#inicio" class="marca" data-iniciais>D & N</a><div class="lateral-centro"><span class="eyebrow">COM DEUS, UMA NOVA HISTÓRIA</span><div class="arco"><span class="ornamento">&</span><h2 data-noivos>Denner & Nágila</h2><p data-data>12 • 12 • 2026</p></div><p class="lateral-frase">O nosso sim.<br>O começo de uma vida inteira.</p></div><span class="eyebrow">E VOCÊ FAZ PARTE DESSE DIA</span></aside>
     <main>
       <section id="inicio" class="hero hero-convite">
-        <span class="hero-familias hero-entrada etapa-1">JUNTAMENTE COM SUAS FAMÍLIAS</span>
-        <span class="hero-convidam hero-entrada etapa-2">convidam para o casamento de:</span>
-        <span class="hero-divisor hero-entrada etapa-3" aria-hidden="true"><i></i><b>✦</b><i></i></span>
-        <h1 class="hero-nomes hero-entrada etapa-4" aria-label="Denner e Nágila">DENNER <em>&amp;</em> NÁGILA</h1>
-        <div class="hero-data hero-entrada etapa-5" aria-label="12 de dezembro de 2026"><span>12</span><i>|</i><span>DEZ</span><i>|</i><span>2026</span></div>
-        <p class="hero-dia hero-entrada etapa-6">SÁBADO</p>
-        <a class="descer hero-entrada etapa-7" href="#celebracao">Conheça os detalhes <span aria-hidden="true">↓</span></a>
+        <h1 class="sr-only">Nágila &amp; Denner</h1>
+        <p class="sr-only">Juntamente com suas famílias convidam para o casamento de Nágila e Denner, em 12 de dezembro de 2026, sábado.</p>
+        <div class="apresentacao-arte" aria-hidden="true">
+          <img class="arte-moldura" src="./assets/apresentacao-moldura.webp" alt="" fetchpriority="high" decoding="async" draggable="false">
+          <img class="arte-camada arte-flor" src="./assets/apresentacao-flor.png" alt="" decoding="async" draggable="false">
+          <img class="arte-camada arte-frase" src="./assets/apresentacao-frase.png" alt="" decoding="async" draggable="false">
+          <img class="arte-camada arte-nomes" src="./assets/apresentacao-nomes.png" alt="" decoding="async" draggable="false">
+          <img class="arte-camada arte-divisor-data" src="./assets/apresentacao-divisor-data.png" alt="" decoding="async" draggable="false">
+          <img class="arte-camada arte-data" src="./assets/apresentacao-data.png" alt="" decoding="async" draggable="false">
+          <img class="arte-camada arte-sabado" src="./assets/apresentacao-sabado.png" alt="" decoding="async" draggable="false">
+          <img class="arte-camada arte-divisor-final" src="./assets/apresentacao-divisor-final.png" alt="" decoding="async" draggable="false">
+        </div>
       </section>
       <section class="fe"><span class="eyebrow">AMOR QUE SE TORNA ALIANÇA</span><h2>Dois caminhos.<br>Uma promessa.</h2><p id="mensagem-fe"></p><small id="referencia"></small></section>
       <section id="historia" hidden><span class="eyebrow">ATÉ CHEGARMOS AQUI</span><h2>Nossa história</h2><p id="texto-historia" class="prewrap"></p></section>

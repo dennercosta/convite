@@ -50,31 +50,136 @@ body.convite-fechado{overflow:hidden;overscroll-behavior:none}
 
 
 /* Primeira apresentação após a abertura do convite */
-.hero.hero-convite{position:relative;isolation:isolate;min-height:100vh;min-height:100svh;overflow:hidden;padding:82px 34px 118px;background:radial-gradient(circle at 50% 30%,#fff 0,#f7f8f6 38%,#e9eff4 100%)}
-.hero-convite::before{content:'D & N';position:absolute;z-index:-2;top:50%;left:50%;transform:translate(-50%,-51%);white-space:nowrap;font:italic clamp(108px,32vw,180px)/1 var(--serif);letter-spacing:-.07em;color:#526f910d}
-.hero-convite::after{content:'';position:absolute;z-index:-1;top:50%;left:50%;width:min(78vw,390px);aspect-ratio:1/1.28;transform:translate(-50%,-51%);border:1px solid #8197aa2b;border-radius:50% 50% 46% 46%;box-shadow:0 0 0 11px #fff4}
-.hero-entrada{opacity:0;filter:blur(3px);transform:translate3d(0,18px,0)}
-.conteudo-aberto .hero-entrada{animation:heroRevela .86s cubic-bezier(.2,.72,.25,1) both}
-.conteudo-aberto .hero-entrada.etapa-1{animation-delay:.12s}
-.conteudo-aberto .hero-entrada.etapa-2{animation-delay:.44s}
-.conteudo-aberto .hero-entrada.etapa-3{animation-delay:.72s}
-.conteudo-aberto .hero-entrada.etapa-4{animation-name:heroNomes;animation-duration:1.08s;animation-delay:.92s}
-.conteudo-aberto .hero-entrada.etapa-5{animation-delay:1.38s}
-.conteudo-aberto .hero-entrada.etapa-6{animation-delay:1.66s}
-.conteudo-aberto .hero-entrada.etapa-7{animation-delay:1.98s}
-.hero-familias{display:block;margin:0 0 8px;font:600 clamp(9px,2.5vw,11px)/1.5 var(--sans);letter-spacing:.25em;color:#526f91}
-.hero-convidam{display:block;margin:0 0 22px;font:italic clamp(19px,5vw,25px)/1.25 var(--serif);color:#52677e}
-.hero-divisor{display:flex;align-items:center;justify-content:center;gap:11px;width:min(210px,65%);margin:0 auto 20px;color:#72889d}
-.hero-divisor i{display:block;flex:1;height:1px;background:linear-gradient(90deg,transparent,#72889d99)}
-.hero-divisor i:last-child{background:linear-gradient(90deg,#72889d99,transparent)}
-.hero-divisor b{font-size:9px;font-weight:400}
-.hero.hero-convite .hero-nomes{margin:0;white-space:nowrap;font:500 clamp(39px,11vw,54px)/1.02 var(--serif);letter-spacing:-.035em;color:#263f5b;text-shadow:0 1px 0 #fff}
-.hero-nomes em{display:inline-block;margin:0 .07em;font-size:.72em;font-weight:400;color:#667d91}
-.hero-data{display:flex;align-items:center;justify-content:center;gap:13px;margin:31px 0 3px;font:600 clamp(14px,4vw,18px)/1 var(--sans);letter-spacing:.17em;color:#344e69}
-.hero-data i{font-style:normal;font-weight:400;color:#8797a6}
-.hero-dia{margin:10px 0 0;font:600 9px/1 var(--sans);letter-spacing:.44em;padding-left:.44em;color:#667d91}
-.hero.hero-convite .descer{margin-top:52px;color:#526f91}
-@keyframes heroRevela{0%{opacity:0;filter:blur(3px);transform:translate3d(0,18px,0)}100%{opacity:1;filter:blur(0);transform:translate3d(0,0,0)}}
-@keyframes heroNomes{0%{opacity:0;filter:blur(5px);transform:translate3d(0,15px,0) scale(.965);letter-spacing:.02em}100%{opacity:1;filter:blur(0);transform:translate3d(0,0,0) scale(1);letter-spacing:-.035em}}
-@media(max-width:390px){.hero.hero-convite{padding-inline:20px}.hero.hero-convite .hero-nomes{font-size:clamp(35px,10.7vw,42px)}.hero-data{gap:9px}}
-@media(prefers-reduced-motion:reduce){.hero-entrada{opacity:1!important;filter:none!important;transform:none!important;animation:none!important}}
+.hero.hero-convite{
+  position:relative;
+  isolation:isolate;
+  min-height:100vh;
+  min-height:100svh;
+  overflow:hidden;
+  padding:0 0 calc(58px + env(safe-area-inset-bottom));
+  background:radial-gradient(circle at 50% 40%,#fffdf8 0,#faf5ea 52%,#eee6d8 100%);
+}
+.hero.hero-convite::before{
+  content:'';
+  position:absolute;
+  inset:-12%;
+  z-index:-1;
+  background:
+    radial-gradient(circle at 20% 82%,#bed4dc24 0 12%,transparent 36%),
+    radial-gradient(circle at 76% 18%,#e7c99b24 0 10%,transparent 32%);
+  filter:blur(22px);
+}
+.apresentacao-arte{
+  position:relative;
+  z-index:1;
+  flex:none;
+  height:min(calc(100svh - 58px - env(safe-area-inset-bottom)),191.7vw);
+  max-height:1020px;
+  aspect-ratio:942/1672;
+  filter:drop-shadow(0 18px 28px #6b563420);
+  transform-origin:50% 52%;
+  will-change:transform;
+}
+.apresentacao-arte img{
+  position:absolute;
+  display:block;
+  height:auto;
+  max-width:none;
+  user-select:none;
+  pointer-events:none;
+}
+.arte-moldura{
+  inset:0;
+  width:100%;
+  height:100%!important;
+  object-fit:fill;
+  opacity:0;
+  transform:scale(.972);
+  will-change:opacity,transform;
+}
+.arte-camada{
+  opacity:0;
+  filter:blur(3px);
+  transform:translate3d(0,10px,0);
+  will-change:opacity,filter,transform;
+}
+.arte-flor{left:47.877%;top:20.275%;width:4.246%;transform-origin:50% 100%}
+.arte-frase{left:23.461%;top:25%;width:52.442%}
+.arte-nomes{left:-10.085%;top:31.22%;width:114.65%;transform-origin:50% 50%}
+.arte-divisor-data{left:31.741%;top:49.701%;width:31%}
+.arte-data{left:15.924%;top:52.153%;width:62.421%}
+.arte-sabado{left:35.987%;top:56.041%;width:23.567%}
+.arte-divisor-final{left:37.473%;top:58.732%;width:20.594%}
+.conteudo-aberto .apresentacao-arte{
+  animation:apresentacaoRespira 8s ease-in-out 3.2s infinite alternate;
+}
+.conteudo-aberto .arte-moldura{
+  animation:molduraEntrada 1.18s cubic-bezier(.2,.72,.25,1) both;
+}
+.conteudo-aberto .arte-camada{
+  animation:arteRevela .78s cubic-bezier(.2,.72,.25,1) both;
+}
+.conteudo-aberto .arte-flor{
+  animation:arteFlor .84s cubic-bezier(.2,.72,.25,1) .38s both,florRespira 5.4s ease-in-out 1.4s infinite alternate;
+}
+.conteudo-aberto .arte-frase{animation-delay:.68s}
+.conteudo-aberto .arte-nomes{
+  animation-name:arteNomes;
+  animation-duration:1.04s;
+  animation-delay:1.02s;
+}
+.conteudo-aberto .arte-divisor-data{
+  animation-name:arteDivisor;
+  animation-duration:.78s;
+  animation-delay:1.56s;
+  transform-origin:center;
+}
+.conteudo-aberto .arte-data{animation-delay:1.78s}
+.conteudo-aberto .arte-sabado{animation-delay:2.03s}
+.conteudo-aberto .arte-divisor-final{
+  animation-name:arteDivisor;
+  animation-duration:.72s;
+  animation-delay:2.24s;
+  transform-origin:center;
+}
+@keyframes molduraEntrada{
+  0%{opacity:0;transform:scale(.972)}
+  100%{opacity:1;transform:scale(1)}
+}
+@keyframes apresentacaoRespira{
+  0%{transform:translate3d(0,0,0) scale(1)}
+  100%{transform:translate3d(0,-2px,0) scale(1.004)}
+}
+@keyframes arteRevela{
+  0%{opacity:0;filter:blur(3px);transform:translate3d(0,10px,0)}
+  100%{opacity:1;filter:blur(0);transform:translate3d(0,0,0)}
+}
+@keyframes arteNomes{
+  0%{opacity:0;filter:blur(5px);transform:translate3d(0,13px,0) scale(.972)}
+  100%{opacity:1;filter:blur(0);transform:translate3d(0,0,0) scale(1)}
+}
+@keyframes arteDivisor{
+  0%{opacity:0;filter:blur(2px);transform:scaleX(.18)}
+  100%{opacity:1;filter:blur(0);transform:scaleX(1)}
+}
+@keyframes arteFlor{
+  0%{opacity:0;filter:blur(3px);transform:translate3d(0,8px,0) rotate(-8deg) scale(.82)}
+  100%{opacity:1;filter:blur(0);transform:translate3d(0,0,0) rotate(0) scale(1)}
+}
+@keyframes florRespira{
+  0%{opacity:1;filter:blur(0);transform:translate3d(0,0,0) rotate(-1.8deg)}
+  100%{opacity:1;filter:blur(0);transform:translate3d(0,-2px,0) rotate(1.8deg)}
+}
+@media(max-width:390px){
+  .hero.hero-convite{padding-bottom:calc(56px + env(safe-area-inset-bottom))}
+  .apresentacao-arte{height:min(calc(100svh - 56px - env(safe-area-inset-bottom)),191.7vw)}
+}
+@media(prefers-reduced-motion:reduce){
+  .apresentacao-arte,.arte-moldura,.arte-camada{
+    opacity:1!important;
+    filter:none!important;
+    transform:none!important;
+    animation:none!important;
+  }
+}
+
