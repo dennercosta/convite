@@ -73,9 +73,11 @@ body.convite-fechado{overflow:hidden;overscroll-behavior:none}
   position:relative;
   z-index:1;
   flex:none;
-  height:min(calc(100svh - 58px - env(safe-area-inset-bottom)),191.7vw);
-  max-height:1020px;
+  width:min(calc(100% - 20px),calc((100svh - 68px - env(safe-area-inset-bottom))*942/1672),575px);
+  height:auto;
   aspect-ratio:942/1672;
+  margin-inline:auto;
+  overflow:visible;
   filter:drop-shadow(0 18px 28px #6b563420);
   transform-origin:50% 52%;
   will-change:transform;
@@ -90,6 +92,7 @@ body.convite-fechado{overflow:hidden;overscroll-behavior:none}
 }
 .arte-moldura{
   inset:0;
+  z-index:1;
   width:100%;
   height:100%!important;
   object-fit:fill;
@@ -98,24 +101,116 @@ body.convite-fechado{overflow:hidden;overscroll-behavior:none}
   will-change:opacity,transform;
 }
 .arte-camada{
+  z-index:4;
   opacity:0;
   filter:blur(3px);
   transform:translate3d(0,10px,0);
   will-change:opacity,filter,transform;
 }
 .arte-flor{left:47.877%;top:20.275%;width:4.246%;transform-origin:50% 100%}
-.arte-frase{left:23.461%;top:25%;width:52.442%}
-.arte-nomes{left:-10.085%;top:31.22%;width:114.65%;transform-origin:50% 50%}
-.arte-divisor-data{left:31.741%;top:49.701%;width:31%}
-.arte-data{left:15.924%;top:52.153%;width:62.421%}
-.arte-sabado{left:35.987%;top:56.041%;width:23.567%}
-.arte-divisor-final{left:37.473%;top:58.732%;width:20.594%}
+.arte-frase{left:26.461%;top:25%;width:52.442%}
+.arte-nomes{left:-7.085%;top:31.22%;width:114.65%;transform-origin:50% 50%}
+.arte-divisor-data{left:34.741%;top:49.701%;width:31%}
+.arte-data{left:18.924%;top:52.153%;width:62.421%}
+.arte-sabado{left:38.987%;top:56.041%;width:23.567%}
+.arte-divisor-final{left:40.473%;top:58.732%;width:20.594%}
+
+/* A moldura original é reutilizada em recortes muito suaves para dar vida às plantas. */
+.natureza-animada,.passaros-cena{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  overflow:visible;
+}
+.natureza-animada{z-index:2;opacity:0}
+.vegetacao{
+  position:absolute;
+  inset:0;
+  background:url('./assets/apresentacao-moldura.webp') center/100% 100% no-repeat;
+  will-change:transform;
+}
+.vegetacao-topo{
+  clip-path:polygon(43% 0,100% 0,100% 42%,76% 36%,58% 25%);
+  transform-origin:86% 18%;
+  animation:plantaTopo 5.8s ease-in-out infinite alternate;
+}
+.vegetacao-esquerda{
+  clip-path:polygon(0 48%,34% 50%,40% 84%,0 88%);
+  transform-origin:19% 76%;
+  animation:plantaEsquerda 6.7s ease-in-out -.8s infinite alternate;
+}
+.vegetacao-direita{
+  clip-path:polygon(67% 42%,100% 39%,100% 88%,63% 82%);
+  transform-origin:86% 69%;
+  animation:plantaDireita 7.3s ease-in-out -1.7s infinite alternate;
+}
+.agua-viva{
+  position:absolute;
+  z-index:3;
+  left:17%;
+  top:59%;
+  width:66%;
+  height:30%;
+  border-radius:26% 26% 43% 43%;
+  opacity:.38;
+  overflow:hidden;
+  mix-blend-mode:soft-light;
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 16%,#000 82%,transparent 100%);
+  mask-image:linear-gradient(to bottom,transparent 0,#000 16%,#000 82%,transparent 100%);
+  background:
+    radial-gradient(ellipse at 45% 22%,#fff9 0 1%,transparent 18%),
+    repeating-linear-gradient(0deg,transparent 0 8px,#fff8 9px,#9bc0c966 10px,transparent 12px);
+  background-size:130% 100%,100% 34px;
+  animation:aguaOndula 5.2s ease-in-out infinite alternate;
+}
+.agua-viva::after{
+  content:'';
+  position:absolute;
+  inset:9% 3% 5%;
+  background:repeating-radial-gradient(ellipse at 50% 0,transparent 0 13px,#fff8 14px,transparent 16px 23px);
+  opacity:.42;
+  animation:reflexoAgua 4.6s linear infinite;
+}
+.passaros-cena{z-index:6}
+.passaro{
+  position:absolute;
+  width:24px;
+  height:12px;
+  opacity:0;
+  color:#6b5943;
+  filter:drop-shadow(0 1px 1px #fff9);
+  will-change:left,top,transform,opacity;
+}
+.passaro::before,.passaro::after{
+  content:'';
+  position:absolute;
+  top:5px;
+  width:13px;
+  height:7px;
+  border-top:2px solid currentColor;
+  border-radius:50%;
+}
+.passaro::before{
+  right:50%;
+  transform-origin:100% 50%;
+  animation:asaEsquerda .42s ease-in-out infinite alternate;
+}
+.passaro::after{
+  left:50%;
+  transform-origin:0 50%;
+  animation:asaDireita .42s ease-in-out infinite alternate;
+}
+.passaro-1{animation:vooUm 10.8s cubic-bezier(.35,.1,.65,.9) 3.2s infinite}
+.passaro-2{width:18px;height:9px;animation:vooDois 12.4s cubic-bezier(.35,.1,.65,.9) 5.1s infinite}
+.passaro-3{width:14px;height:7px;color:#7c6d56;animation:vooTres 14.2s cubic-bezier(.35,.1,.65,.9) 7.4s infinite}
+
 .conteudo-aberto .apresentacao-arte{
   animation:apresentacaoRespira 8s ease-in-out 3.2s infinite alternate;
 }
 .conteudo-aberto .arte-moldura{
   animation:molduraEntrada 1.18s cubic-bezier(.2,.72,.25,1) both;
 }
+.conteudo-aberto .natureza-animada{animation:naturezaAparece .9s ease .72s both}
 .conteudo-aberto .arte-camada{
   animation:arteRevela .78s cubic-bezier(.2,.72,.25,1) both;
 }
@@ -146,6 +241,7 @@ body.convite-fechado{overflow:hidden;overscroll-behavior:none}
   0%{opacity:0;transform:scale(.972)}
   100%{opacity:1;transform:scale(1)}
 }
+@keyframes naturezaAparece{from{opacity:0}to{opacity:1}}
 @keyframes apresentacaoRespira{
   0%{transform:translate3d(0,0,0) scale(1)}
   100%{transform:translate3d(0,-2px,0) scale(1.004)}
@@ -170,16 +266,61 @@ body.convite-fechado{overflow:hidden;overscroll-behavior:none}
   0%{opacity:1;filter:blur(0);transform:translate3d(0,0,0) rotate(-1.8deg)}
   100%{opacity:1;filter:blur(0);transform:translate3d(0,-2px,0) rotate(1.8deg)}
 }
+@keyframes plantaTopo{
+  0%{transform:rotate(-.2deg) translate3d(0,0,0)}
+  100%{transform:rotate(.65deg) translate3d(-1px,1px,0)}
+}
+@keyframes plantaEsquerda{
+  0%{transform:rotate(-.45deg) translate3d(0,0,0)}
+  100%{transform:rotate(.75deg) translate3d(1px,-1px,0)}
+}
+@keyframes plantaDireita{
+  0%{transform:rotate(.25deg) translate3d(0,0,0)}
+  100%{transform:rotate(-.6deg) translate3d(-1px,0,0)}
+}
+@keyframes aguaOndula{
+  0%{background-position:0 0,0 0;transform:scaleX(.995) translateY(0)}
+  100%{background-position:12% 2%,18px 8px;transform:scaleX(1.008) translateY(1px)}
+}
+@keyframes reflexoAgua{
+  0%{transform:translate3d(-5px,0,0);opacity:.28}
+  50%{opacity:.55}
+  100%{transform:translate3d(8px,7px,0);opacity:.25}
+}
+@keyframes asaEsquerda{from{transform:rotate(13deg)}to{transform:rotate(-22deg)}}
+@keyframes asaDireita{from{transform:rotate(-13deg)}to{transform:rotate(22deg)}}
+@keyframes vooUm{
+  0%,9%{left:57%;top:74%;opacity:0;transform:rotate(-18deg) scale(.56)}
+  14%{opacity:.82}
+  56%{left:34%;top:40%;opacity:.9;transform:rotate(-26deg) scale(.88)}
+  86%{opacity:.78}
+  100%{left:-10%;top:13%;opacity:0;transform:rotate(-31deg) scale(1.08)}
+}
+@keyframes vooDois{
+  0%,12%{left:47%;top:72%;opacity:0;transform:rotate(13deg) scale(.48)}
+  18%{opacity:.7}
+  62%{left:67%;top:38%;opacity:.78;transform:rotate(20deg) scale(.78)}
+  100%{left:108%;top:18%;opacity:0;transform:rotate(24deg) scale(1)}
+}
+@keyframes vooTres{
+  0%,16%{left:53%;top:69%;opacity:0;transform:rotate(-4deg) scale(.42)}
+  22%{opacity:.55}
+  64%{left:50%;top:33%;opacity:.65;transform:rotate(-8deg) scale(.68)}
+  100%{left:42%;top:-7%;opacity:0;transform:rotate(-12deg) scale(.86)}
+}
 @media(max-width:390px){
   .hero.hero-convite{padding-bottom:calc(56px + env(safe-area-inset-bottom))}
-  .apresentacao-arte{height:min(calc(100svh - 56px - env(safe-area-inset-bottom)),191.7vw)}
+  .apresentacao-arte{width:min(calc(100% - 16px),calc((100svh - 64px - env(safe-area-inset-bottom))*942/1672),575px)}
+  .passaro{transform:scale(.86)}
 }
 @media(prefers-reduced-motion:reduce){
-  .apresentacao-arte,.arte-moldura,.arte-camada{
+  .apresentacao-arte,.arte-moldura,.arte-camada,.natureza-animada,.vegetacao,.agua-viva,.agua-viva::after,.passaro,.passaro::before,.passaro::after{
     opacity:1!important;
     filter:none!important;
     transform:none!important;
     animation:none!important;
   }
+  .passaros-cena{display:none}
+  .agua-viva{opacity:.16!important}
 }
 
