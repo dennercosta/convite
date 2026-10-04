@@ -14,7 +14,7 @@ window.CASAMENTO = {
   mensagemFe: "Que o amor, a fé e a presença de Deus guiem cada passo da nossa caminhada.",
   referenciaBiblica: "1 Coríntios 13:4–7",
   historia: "", // Sua história verdadeira. A seção fica oculta enquanto estiver vazia.
-  celebracao: { local: "Sítio Paraíso - Nerópolis", endereco: "", horario: "16h", mapa: "https://maps.app.goo.gl/5gzfruJ4vFBVpftA9" }, // Cerimônia e recepção no mesmo local.
+  celebracao: { local: "Sítio Paraíso - Macaúba", endereco: "Nerópolis/GO", horario: "16:00", mapa: "https://maps.app.goo.gl/RWsbPRLrLQ8YapE16" }, // Cerimônia e recepção no mesmo local.
   traje: "", // Ex.: Esporte fino. Informe apenas o traje escolhido por vocês.
   prazoConfirmacao: "",
   pix: { chave: "", titular: "", banco: "" },
