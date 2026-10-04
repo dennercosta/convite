@@ -666,3 +666,40 @@ main::before{
   .coracao-dia path{stroke-dashoffset:0;fill:#b76e6710}
   .texto-digitado::after{display:none!important}
 }
+
+/* As molduras só são reveladas quando entram no campo de visão */
+.mensagem-especial.revelacao-pendente .mensagem-quadro,
+.calendario-casamento.revelacao-pendente .calendario-quadro{
+  opacity:0;
+  transform:translate3d(0,30px,0) scale(.985);
+  clip-path:inset(7% 0 7% 0 round 22px);
+  filter:blur(5px) drop-shadow(0 8px 16px #40566d0d);
+  transition:
+    opacity .9s ease,
+    transform 1.15s cubic-bezier(.2,.74,.24,1),
+    clip-path 1.2s cubic-bezier(.2,.74,.24,1),
+    filter 1s ease;
+  will-change:opacity,transform,clip-path,filter;
+}
+.mensagem-especial.revelacao-pendente.em-exibicao .mensagem-quadro,
+.calendario-casamento.revelacao-pendente.em-exibicao .calendario-quadro{
+  opacity:1;
+  transform:translate3d(0,0,0) scale(1);
+  clip-path:inset(0 0 0 0 round 0);
+  filter:blur(0) drop-shadow(0 16px 24px #40566d1c);
+}
+.calendario-casamento.revelacao-pendente:not(.em-exibicao) .coracao-dia path{
+  animation:none;
+  stroke-dashoffset:260;
+  opacity:0;
+}
+@media(prefers-reduced-motion:reduce){
+  .mensagem-especial.revelacao-pendente .mensagem-quadro,
+  .calendario-casamento.revelacao-pendente .calendario-quadro{
+    opacity:1!important;
+    transform:none!important;
+    clip-path:none!important;
+    filter:drop-shadow(0 16px 24px #40566d1c)!important;
+    transition:none!important;
+  }
+}
