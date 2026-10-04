@@ -20,6 +20,8 @@ window.CASAMENTO = {
   pix: { chave: "", titular: "", banco: "" },
   listaPresentes: "", // URL https:// da lista, se houver.
   whatsapp: "", // DDI + DDD + número, apenas dígitos: 55...
+  // A chave anon/publishable é pública por definição. Nunca use a service_role no site.
+  supabase: { url: "", anonKey: "", tabela: "confirmacoes" },
   fotoCapa: "", // Ex.: /fotos/casal.jpg — coloque o arquivo em public/fotos/.
   fotos: [], // Ex.: [{ src: "/fotos/casal.jpg", legenda: "Nosso momento" }]
   musica: "" // Ex.: /musica.mp3. Use uma faixa que você tenha direito de compartilhar.
