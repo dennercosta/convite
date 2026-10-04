@@ -195,6 +195,24 @@ if (secaoCalendario) {
   }
 }
 
+// Revelação do horário e do local da cerimônia.
+const secaoLocalCerimonia = document.querySelector('.cerimonia-apresentacao');
+if (secaoLocalCerimonia) {
+  secaoLocalCerimonia.classList.add('revelacao-pendente');
+  const revelarLocalCerimonia = () => secaoLocalCerimonia.classList.add('em-exibicao');
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
+    revelarLocalCerimonia();
+  } else {
+    const observadorLocalCerimonia = new IntersectionObserver(entries => {
+      if (entries.some(entry => entry.isIntersecting)) {
+        revelarLocalCerimonia();
+        observadorLocalCerimonia.disconnect();
+      }
+    }, { threshold: .14 });
+    observadorLocalCerimonia.observe(secaoLocalCerimonia);
+  }
+}
+
 // Movimento sutil do fundo, sincronizado com a rolagem.
 const fundoPagina = document.querySelector('main');
 const movimentoReduzido = window.matchMedia('(prefers-reduced-motion: reduce)');
