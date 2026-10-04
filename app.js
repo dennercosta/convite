@@ -137,12 +137,14 @@ $('copiar-pix').addEventListener('click', async () => { try { await navigator.cl
 if (/^55\d{10,11}$/.test(c.whatsapp)) external('whatsapp', `https://wa.me/${c.whatsapp}?text=${encodeURIComponent('Olá! Gostaria de falar sobre o casamento.')}`);
 // A mensagem é revelada como uma escrita delicada quando entra na tela.
 const mensagemDigitada = document.getElementById('texto-digitado');
+const secaoMensagem = document.getElementById('mensagem-especial');
 if (mensagemDigitada) {
+  secaoMensagem?.classList.add('revelacao-pendente');
   const mensagemCompleta = (mensagemDigitada.dataset.texto || '').replace(/\\n/g, '\n');
   const revelarMensagem = () => {
     if (mensagemDigitada.dataset.iniciada) return;
     mensagemDigitada.dataset.iniciada = 'true';
-    document.getElementById('mensagem-especial')?.classList.add('em-exibicao');
+    secaoMensagem?.classList.add('em-exibicao');
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       mensagemDigitada.textContent = mensagemCompleta;
       return;
@@ -160,7 +162,7 @@ if (mensagemDigitada) {
       const pausa = caractere === '\n' ? 240 : /[.!?]/.test(caractere) ? 180 : /[,;]/.test(caractere) ? 85 : 24;
       window.setTimeout(digitar, pausa);
     };
-    digitar();
+    window.setTimeout(digitar, 620);
   };
   if ('IntersectionObserver' in window) {
     const observadorMensagem = new IntersectionObserver(entries => {
@@ -172,6 +174,24 @@ if (mensagemDigitada) {
     observadorMensagem.observe(mensagemDigitada);
   } else {
     revelarMensagem();
+  }
+}
+
+// O calendário aparece somente quando o convidado chega até ele.
+const secaoCalendario = document.getElementById('calendario-casamento');
+if (secaoCalendario) {
+  secaoCalendario.classList.add('revelacao-pendente');
+  const revelarCalendario = () => secaoCalendario.classList.add('em-exibicao');
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
+    revelarCalendario();
+  } else {
+    const observadorCalendario = new IntersectionObserver(entries => {
+      if (entries.some(entry => entry.isIntersecting)) {
+        revelarCalendario();
+        observadorCalendario.disconnect();
+      }
+    }, { threshold: .2 });
+    observadorCalendario.observe(secaoCalendario);
   }
 }
 
