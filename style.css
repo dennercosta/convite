@@ -503,3 +503,38 @@ body.convite-fechado{overflow:hidden;overscroll-behavior:none}
 @media(prefers-reduced-motion:reduce){
   .hero.hero-convite::after{animation:none!important}
 }
+
+
+/* Background contínuo da segunda parte */
+main{
+  position:relative;
+  isolation:isolate;
+  background-color:#e6f0f4;
+  background-image:url('./assets/background-base.webp');
+  background-position:center top;
+  background-size:100% auto;
+  background-repeat:repeat-y;
+}
+main::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  opacity:.6;
+  background-image:url('./assets/background-textura.webp');
+  background-position:center top;
+  background-size:100% auto;
+  background-repeat:repeat-y;
+}
+main>section,main>footer{
+  position:relative;
+  z-index:1;
+}
+main>section:not(.hero),main>footer{
+  background-color:transparent!important;
+  background-image:none!important;
+}
+@media(prefers-reduced-motion:reduce){
+  main::before{animation:none!important}
+}
