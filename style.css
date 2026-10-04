@@ -1492,3 +1492,54 @@ body.modal-aberto{overflow:hidden}
     animation:rsvpDialogo .45s cubic-bezier(.2,.8,.24,1) both;
   }
 }
+
+
+/* Ações principais reunidas na moldura superior */
+button.acao-convite-botao{font-family:inherit;cursor:pointer}
+.pix-modal{z-index:75}
+.pix-dialog{width:min(100%,450px)}
+.pix-simbolo{
+  display:grid;
+  width:92px;
+  height:92px;
+  margin:22px auto 20px;
+  place-items:center;
+  border:1px solid #b58b4a;
+  border-radius:50%;
+  background:linear-gradient(145deg,#dcebf0,#fffaf1 55%,#e7d8bd);
+  color:#9b7338;
+  font:400 42px/1 var(--serif);
+  box-shadow:0 0 0 6px #fffaf1,0 0 0 7px #d5bc91;
+}
+.pix-dialog .pix-pendente{
+  max-width:310px;
+  margin:20px auto 4px;
+  color:#667b8c;
+  font:italic 17px/1.55 var(--serif);
+}
+.pix-dialog .pix{
+  margin:22px 0 0;
+  padding:22px 18px;
+  border:1px solid #c9ad7f;
+  border-radius:18px;
+  background:#fffdf9c9;
+}
+.pix-dialog .pix code{
+  display:block;
+  margin:18px 0;
+  padding:12px;
+  border:1px solid #c8d8df;
+  border-radius:10px;
+  background:#edf5f7;
+  color:#355168;
+}
+.pix-dialog #copiar-pix{
+  width:100%;
+  border-color:#8ca7b8;
+  border-radius:999px;
+  background:#284a67;
+  color:#fff;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.pix-dialog #copiar-pix:hover{background:#365d7b}
