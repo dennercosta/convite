@@ -123,9 +123,26 @@ if (c.pix.chave && c.pix.titular) {
   $('pix').hidden = false; $('pix-pendente').hidden = true;
   text('pix-chave', c.pix.chave); text('pix-titular', c.pix.titular); text('pix-banco', c.pix.banco);
 }
-$('abrir-pix').addEventListener('click', () => {
-  const open = $('pix-painel').hidden; $('pix-painel').hidden = !open;
-  $('abrir-pix').setAttribute('aria-expanded', String(open));
+const pixModal = $('pix-modal');
+const abrirPixModal = () => {
+  if (!pixModal) return;
+  pixModal.hidden = false;
+  document.body.classList.add('modal-aberto');
+  window.setTimeout(() => $('pix-fechar')?.focus(), 80);
+};
+const fecharPixModal = () => {
+  if (!pixModal) return;
+  pixModal.hidden = true;
+  document.body.classList.remove('modal-aberto');
+  $('abrir-pix')?.focus();
+};
+$('abrir-pix')?.addEventListener('click', abrirPixModal);
+$('pix-fechar')?.addEventListener('click', fecharPixModal);
+pixModal?.addEventListener('click', event => {
+  if (event.target === pixModal) fecharPixModal();
+});
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && pixModal && !pixModal.hidden) fecharPixModal();
 });
 $('copiar-pix').addEventListener('click', async () => { try { await navigator.clipboard.writeText(c.pix.chave); text('pix-status', 'Chave copiada!'); } catch { text('pix-status', 'Selecione e copie a chave acima.'); } });
 if (/^55\d{10,11}$/.test(c.whatsapp)) external('whatsapp', `https://wa.me/${c.whatsapp}?text=${encodeURIComponent('Olá! Gostaria de falar sobre o casamento.')}`);
