@@ -9,7 +9,7 @@
   <link rel="preload" as="image" href="./assets/folhas-inferiores.webp" type="image/webp">
   <link rel="preload" as="image" href="./assets/laco-inicial.webp" type="image/webp">
   <link rel="preload" as="image" href="./assets/apresentacao-moldura-v2.webp" type="image/webp">
-  <link rel="stylesheet" href="./style.css?v=presentes-20261004a"><script defer src="./config.js?v=presentes-20261004a"></script><script defer src="./app.js?v=presentes-20261004a"></script>
+  <link rel="stylesheet" href="./style.css?v=acoes-topo-20261004b"><script defer src="./config.js?v=presentes-20261004a"></script><script defer src="./app.js?v=acoes-topo-20261004b"></script>
 </head>
 <body class="convite-fechado">
   <div id="abertura" class="abertura" role="dialog" aria-modal="true" aria-label="Convite de casamento de Denner e Nágila">
@@ -110,7 +110,7 @@
           <p class="acoes-prazo-intro">Pedimos que responda até</p>
           <p class="acoes-prazo">01 de novembro de 2026</p>
           <div class="acoes-ornamento" aria-hidden="true"><span>❧</span></div>
-          <p class="acoes-presentes-texto">E, para nos presentear, deixamos nossa lista de presentes logo abaixo.</p>
+          <p class="acoes-presentes-texto">Para nos presentear, escolha uma das opções abaixo.</p>
           <div class="acoes-botoes">
             <button type="button" id="abrir-rsvp-modal" class="acao-convite-botao">
               <span class="acao-convite-icone" aria-hidden="true">
@@ -119,13 +119,20 @@
               <span class="acao-convite-texto"><strong>Confirmar presença</strong><small>Clique aqui para confirmar</small></span>
               <span class="acao-convite-seta" aria-hidden="true">›</span>
             </button>
-            <a class="acao-convite-botao" href="#presentes">
+            <button type="button" id="abrir-presentes" class="acao-convite-botao" aria-haspopup="dialog" aria-controls="presentes-modal">
               <span class="acao-convite-icone" aria-hidden="true">
                 <svg viewBox="0 0 24 24"><path d="M4 10h16v10H4zM3 7h18v3H3zM12 7v13"></path><path d="M12 7H8.5A2.5 2.5 0 1 1 11 4.5L12 7ZM12 7h3.5A2.5 2.5 0 1 0 13 4.5L12 7Z"></path></svg>
               </span>
-              <span class="acao-convite-texto"><strong>Lista de presentes</strong><small>Clique aqui para acessar</small></span>
+              <span class="acao-convite-texto"><strong>Lista de presentes</strong><small>Escolha uma opção com carinho</small></span>
               <span class="acao-convite-seta" aria-hidden="true">›</span>
-            </a>
+            </button>
+            <button type="button" id="abrir-pix" class="acao-convite-botao" aria-haspopup="dialog" aria-controls="pix-modal">
+              <span class="acao-convite-icone" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M12 3 8.5 6.5 12 10l3.5-3.5L12 3ZM6.5 8.5 3 12l3.5 3.5L10 12 6.5 8.5ZM17.5 8.5 14 12l3.5 3.5L21 12l-3.5-3.5ZM12 14l-3.5 3.5L12 21l3.5-3.5L12 14Z"></path></svg>
+              </span>
+              <span class="acao-convite-texto"><strong>Pix</strong><small>Presentear os noivos via Pix</small></span>
+              <span class="acao-convite-seta" aria-hidden="true">›</span>
+            </button>
           </div>
         </div>
       </section>
@@ -135,12 +142,11 @@
       <section id="celebracao"><span class="eyebrow">NOSSO ENCONTRO</span><h2>O nosso grande dia</h2><p data-data class="data">12 • 12 • 2026</p><a id="calendario" class="link" hidden>Adicionar à agenda ↗</a><div class="evento"><div><h3>Cerimônia & recepção</h3><p>A cerimônia e a recepção acontecerão no mesmo lugar.</p><dl class="detalhes-evento"><dt>Local</dt><dd id="celebracao-local">Local a informar</dd><dt>Endereço</dt><dd id="celebracao-endereco">Endereço a informar</dd><dt>Horário</dt><dd id="celebracao-horario">Horário a informar</dd></dl><a id="celebracao-mapa" class="link" target="_blank" rel="noopener" hidden>Como chegar ↗</a></div></div></section>
       <section id="galeria" hidden><span class="eyebrow">PEQUENOS INSTANTES, GRANDES MEMÓRIAS</span><h2>Nosso amor em fotos</h2><div id="fotos" class="fotos"></div></section>
       <section id="presenca"><span class="eyebrow">VAMOS VIVER ESSE MOMENTO JUNTOS?</span><h2>Confirmação de presença</h2><p id="prazo">Para que possamos preparar tudo com muito carinho, pedimos que confirme sua presença até [data].</p><p class="aviso-previa" id="aviso-previa">Prévia do convite — a confirmação de presença estará disponível na versão final.</p><form id="rsvp" aria-describedby="aviso-previa"><fieldset disabled><legend class="sr-only">Modelo do formulário de confirmação</legend><label>Seu nome completo<input name="nome" required minlength="2" maxlength="100" autocomplete="name"></label><label>Você poderá estar conosco?<select name="presenca" required><option value="">Selecione uma opção</option><option value="sim">Sim, estarei presente!</option><option value="nao">Infelizmente, não poderei ir.</option></select></label><label id="grupo-label">Pessoas do seu convite, incluindo você<input name="pessoas" type="number" min="1" max="20" value="1" required><small>Inclua somente as pessoas que foram convidadas com você.</small></label><label>Recado para os noivos <span class="muted">(opcional)</span><textarea name="mensagem" rows="4" maxlength="1000" placeholder="Deixe seu carinho e suas orações…"></textarea></label><label class="check"><input name="publicar" type="checkbox"> Autorizo exibir meu primeiro nome e recado no mural, após aprovação.</label><div class="armadilha" aria-hidden="true"><label>Deixe vazio<input name="website" tabindex="-1" autocomplete="off"></label></div><p class="privacidade">Sua resposta fica reservada aos noivos para organizar o casamento. Para corrigir ou excluir sua resposta, entre em contato com eles.</p><button type="submit">Confirmação indisponível nesta prévia</button><p id="rsvp-status" role="status" aria-live="polite"></p></fieldset></form></section>
-      <section id="presentes" class="fe"><span class="eyebrow">UM CARINHO PARA O NOSSO LAR</span><h2>Lista de presentes</h2><p>A sua presença já será um presente muito especial para nós!</p><p>Mas, caso queira nos presentear, preparamos algumas opções para facilitar:</p><div class="opcoes-presentes"><p>🎁 Lista de presentes</p><p>💙 Pix dos noivos</p></div><div class="botoes-presentes"><button id="abrir-presentes" class="botao" type="button" aria-haspopup="dialog" aria-controls="presentes-modal">Lista de presentes</button><button id="abrir-pix" type="button" aria-expanded="false" aria-controls="pix-painel">Pix</button></div><div id="pix-painel" class="aviso-presente" hidden><p id="pix-pendente">Em breve, compartilharemos os dados do Pix dos noivos.</p><div id="pix" class="pix" hidden><span class="eyebrow">PIX DOS NOIVOS</span><p id="pix-titular"></p><small id="pix-banco"></small><code id="pix-chave"></code><button id="copiar-pix" type="button">Copiar chave Pix</button><p id="pix-status" role="status"></p><small>Confira o nome do titular no aplicativo do seu banco antes de confirmar.</small></div></div></section>
       <section id="aproveitar"><span class="eyebrow">CELEBRAR COM LEVEZA</span><h2>Para aproveitar<br>o nosso dia</h2><p>Nossa celebração será realizada ao ar livre, em um ambiente especial e cheio de natureza.</p><p id="traje" class="traje">Traje: [esporte fino / social]</p><p>Para maior conforto, recomendamos escolher um calçado adequado ao local.</p><p>E o mais importante: venha celebrar, sorrir e aproveitar esse momento conosco!</p></section>
       <section id="mural" class="fe"><span class="eyebrow">CARINHO EM PALAVRAS</span><h2>Recados & orações</h2><div id="recados"><p>O mural de recados estará disponível na versão final.</p></div></section>
       <footer><div class="monograma pequeno" data-iniciais>D & N</div><h2 class="esperando">ESTAMOS ESPERANDO POR VOCÊ!</h2><p>Que Deus seja o centro da nossa união e que este dia seja marcado por amor, alegria e gratidão.</p><h3 data-noivos>Denner & Nágila</h3><p class="data" data-data>12 • 12 • 2026</p><p>🤍 Com carinho, os noivos</p><a id="whatsapp" class="link" target="_blank" rel="noopener" hidden>Falar com os noivos no WhatsApp ↗</a></footer>
     </main>
-    <nav aria-label="Seções do convite"><a href="#inicio">Início</a><a href="#celebracao">O grande dia</a><a href="#presentes">Presentes</a><a href="#presenca">Presença</a></nav>
+    <nav aria-label="Seções do convite"><a href="#inicio">Início</a><a href="#celebracao">O grande dia</a><a href="#presenca">Presença</a></nav>
   </div>
   <div id="rsvp-modal" class="rsvp-modal" hidden>
     <div class="rsvp-dialog" role="dialog" aria-modal="true" aria-labelledby="rsvp-popup-titulo">
@@ -164,6 +170,23 @@
     </div>
   </div>
 
+  <div id="pix-modal" class="rsvp-modal pix-modal" hidden>
+    <div class="rsvp-dialog pix-dialog" role="dialog" aria-modal="true" aria-labelledby="pix-popup-titulo">
+      <button type="button" id="pix-fechar" class="rsvp-fechar" aria-label="Fechar Pix">×</button>
+      <span class="eyebrow">UM CARINHO PARA O NOSSO LAR</span>
+      <h2 id="pix-popup-titulo">Presentear via Pix</h2>
+      <div class="pix-simbolo" aria-hidden="true">✦</div>
+      <p id="pix-pendente" class="pix-pendente">Em breve, compartilharemos a chave Pix dos noivos.</p>
+      <div id="pix" class="pix" hidden>
+        <p id="pix-titular"></p>
+        <small id="pix-banco"></small>
+        <code id="pix-chave"></code>
+        <button id="copiar-pix" type="button">Copiar chave Pix</button>
+        <p id="pix-status" role="status" aria-live="polite"></p>
+        <small>Confira o nome do titular no aplicativo do seu banco antes de confirmar.</small>
+      </div>
+    </div>
+  </div>
   <div id="presentes-modal" class="rsvp-modal presentes-modal" hidden>
     <div class="presentes-dialog" role="dialog" aria-modal="true" aria-labelledby="presentes-popup-titulo">
       <button type="button" id="presentes-fechar" class="rsvp-fechar" aria-label="Fechar lista de presentes">×</button>
