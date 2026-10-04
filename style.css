@@ -1142,3 +1142,149 @@ main::before{
     animation:none!important;
   }
 }
+
+
+/* Centralização das molduras e pop-up de presença */
+.mensagem-especial,
+.calendario-casamento{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+.mensagem-quadro,
+.calendario-quadro,
+.cerimonia-apresentacao,
+.local-evento,
+.acoes-convidados{
+  display:block;
+  margin-left:auto!important;
+  margin-right:auto!important;
+  align-self:center;
+  box-sizing:border-box;
+}
+.mensagem-quadro,.calendario-quadro{max-width:500px}
+.cerimonia-apresentacao,.local-evento{max-width:460px;width:100%}
+.acoes-convidados{max-width:450px}
+body.modal-aberto{overflow:hidden}
+.rsvp-modal[hidden]{display:none!important}
+.rsvp-modal{
+  position:fixed;
+  z-index:60;
+  inset:0;
+  display:grid;
+  place-items:center;
+  padding:18px;
+  background:#172b4099;
+  backdrop-filter:blur(10px);
+  overflow:auto;
+}
+.rsvp-dialog{
+  position:relative;
+  width:min(100%,450px);
+  max-height:calc(100svh - 36px);
+  overflow:auto;
+  padding:55px 30px 32px;
+  border:1px solid #b78b45;
+  border-radius:34px 34px 16px 16px;
+  background:
+    radial-gradient(circle at 8% 4%,#d6e8ef99 0 8%,transparent 24%),
+    radial-gradient(circle at 94% 96%,#d8e9ef75 0 9%,transparent 26%),
+    linear-gradient(155deg,#fffdf8,#edf5f7);
+  color:#445c70;
+  text-align:center;
+  box-shadow:0 28px 90px #0d1f34a8,0 0 0 5px #fffaf2,0 0 0 6px #c6a66e;
+}
+.rsvp-dialog::before{
+  content:'D & N';
+  position:absolute;
+  top:19px;
+  left:50%;
+  color:#a67b3c;
+  font:500 14px/1 var(--serif);
+  letter-spacing:.18em;
+  transform:translateX(-50%);
+}
+.rsvp-fechar{
+  position:absolute;
+  z-index:2;
+  top:13px;
+  right:13px;
+  width:38px;
+  min-height:38px;
+  padding:0;
+  border:1px solid #b89a6b;
+  border-radius:50%;
+  background:#fffaf1d9;
+  color:#76582e;
+  font:400 25px/1 var(--serif);
+}
+.rsvp-fechar:hover{background:#f3e7d3;color:#5f4524}
+.rsvp-dialog .eyebrow{margin:0 0 10px;color:#987035}
+.rsvp-dialog h2{
+  margin:0 0 10px;
+  color:#3f576b;
+  font-size:clamp(35px,9vw,46px);
+}
+.rsvp-intro{
+  margin:0 auto 25px;
+  max-width:330px;
+  color:#667b8c;
+  font:italic 17px/1.5 var(--serif);
+}
+.rsvp-popup-form{text-align:left;margin:0}
+.rsvp-popup-form label{
+  margin:16px 0;
+  color:#40586c;
+  font-size:11px;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+.rsvp-popup-form input{
+  border:1px solid #9db0bb;
+  border-radius:13px;
+  background:#fffdf9e8;
+  color:#344d62;
+  box-shadow:inset 0 1px 5px #334e6310;
+}
+.rsvp-popup-form label small{
+  color:#718594;
+  font:italic 14px/1.4 var(--serif);
+  letter-spacing:0;
+  text-transform:none;
+}
+.rsvp-enviar{
+  width:100%;
+  margin-top:20px;
+  border-color:#8ca7b8;
+  border-radius:999px;
+  background:#284a67;
+  box-shadow:0 10px 24px #223e5729;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.rsvp-enviar:hover{background:#365d7b}
+.rsvp-status{
+  min-height:22px;
+  margin:15px 0 0;
+  color:#526b7c;
+  font:italic 15px/1.4 var(--serif);
+  text-align:center;
+}
+.rsvp-privacidade{
+  margin:15px 0 0;
+  color:#718594;
+  font-size:9px;
+  line-height:1.5;
+  text-align:center;
+}
+@media(max-width:390px){
+  .mensagem-especial,.calendario-casamento{padding-left:10px;padding-right:10px}
+  .rsvp-modal{padding:11px}
+  .rsvp-dialog{max-height:calc(100svh - 22px);padding:52px 20px 26px}
+}
+@media(prefers-reduced-motion:no-preference){
+  .rsvp-modal:not([hidden]){animation:rsvpFundo .25s ease both}
+  .rsvp-modal:not([hidden]) .rsvp-dialog{animation:rsvpDialogo .45s cubic-bezier(.2,.8,.24,1) both}
+}
+@keyframes rsvpFundo{from{opacity:0}to{opacity:1}}
+@keyframes rsvpDialogo{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:none}}
