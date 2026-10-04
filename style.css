@@ -753,3 +753,18 @@ main::before{
   .save-the-date span{opacity:1!important;clip-path:none!important;filter:none!important;animation:none!important}
   .save-the-date span::after{display:none!important}
 }
+
+/* Save the Date dentro da moldura do calendário */
+.calendario-quadro .save-the-date{
+  position:absolute;
+  z-index:4;
+  left:10%;
+  right:10%;
+  bottom:7.2%;
+  min-height:auto;
+  margin:0;
+  font-size:clamp(40px,10vw,58px);
+}
+@media(max-width:390px){
+  .calendario-quadro .save-the-date{bottom:7.5%;font-size:40px}
+}
