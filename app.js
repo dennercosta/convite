@@ -123,12 +123,6 @@ if (c.pix.chave && c.pix.titular) {
   $('pix').hidden = false; $('pix-pendente').hidden = true;
   text('pix-chave', c.pix.chave); text('pix-titular', c.pix.titular); text('pix-banco', c.pix.banco);
 }
-external('lista', c.listaPresentes);
-if ($('lista').getAttribute('href').startsWith('https://')) {
-  $('lista').target = '_blank'; $('lista').rel = 'noopener';
-} else {
-  $('lista').addEventListener('click', event => { event.preventDefault(); $('lista-info').hidden = false; $('lista-info').focus({ preventScroll: true }); });
-}
 $('abrir-pix').addEventListener('click', () => {
   const open = $('pix-painel').hidden; $('pix-painel').hidden = !open;
   $('abrir-pix').setAttribute('aria-expanded', String(open));
@@ -249,6 +243,242 @@ if (fundoPagina && !movimentoReduzido.matches) {
   }, { passive: true });
   atualizarFundo();
 }
+
+// Lista de presentes com disponibilidade em tempo real no Supabase.
+const presentesModal = $('presentes-modal');
+const presenteReservaModal = $('presente-reserva-modal');
+const presentesGrid = $('presentes-grid');
+const presenteReservaForm = $('presente-reserva-form');
+const presentesConfigurados = Array.isArray(c.presentes)
+  ? c.presentes.filter(item => item && /^[a-z0-9-]+$/i.test(item.id || '') && item.nome && item.imagem)
+  : [];
+const presenteOutro = { id: 'outro', nome: 'Outro presente', outro: true };
+const supabasePresentes = c.supabase || {};
+const supabasePresentesUrl = String(supabasePresentes.url || '').replace(/\/$/, '');
+const supabasePresentesChave = String(supabasePresentes.anonKey || '');
+const tabelaPresentes = /^[a-z0-9_]+$/i.test(supabasePresentes.tabelaPresentes || '')
+  ? supabasePresentes.tabelaPresentes
+  : 'presentes_reservados';
+let presentesReservados = new Set();
+let listaPresentesAtiva = false;
+let presenteAtual = null;
+let retornoPresenteTimer;
+
+const bloquearPaginaPresentes = () => document.body.classList.add('modal-aberto');
+const liberarPaginaPresentes = () => document.body.classList.remove('modal-aberto');
+
+const criarCartaoPresente = item => {
+  const botao = document.createElement('button');
+  botao.type = 'button';
+  botao.className = item.outro ? 'presente-card presente-card-outro' : 'presente-card';
+  botao.disabled = !listaPresentesAtiva;
+  botao.setAttribute('aria-label', item.outro ? 'Escolher outro presente' : `Escolher ${item.nome}`);
+
+  const moldura = document.createElement('span');
+  moldura.className = 'presente-card-moldura';
+  if (item.outro) {
+    const simbolo = document.createElement('span');
+    simbolo.className = 'presente-outro-simbolo';
+    simbolo.textContent = '✦';
+    moldura.append(simbolo);
+  } else {
+    const imagem = document.createElement('img');
+    imagem.src = item.imagem;
+    imagem.alt = item.nome;
+    imagem.loading = 'lazy';
+    imagem.decoding = 'async';
+    moldura.append(imagem);
+  }
+
+  const nome = document.createElement('strong');
+  nome.textContent = item.nome;
+  const acao = document.createElement('span');
+  acao.className = 'presente-card-acao';
+  acao.textContent = item.outro ? 'Escrever minha escolha' : 'Escolher presente';
+  botao.append(moldura, nome, acao);
+  botao.addEventListener('click', () => abrirReservaPresente(item));
+  return botao;
+};
+
+const renderizarPresentes = () => {
+  if (!presentesGrid) return;
+  presentesGrid.replaceChildren();
+  const disponiveis = presentesConfigurados.filter(item => !presentesReservados.has(item.id));
+  disponiveis.forEach(item => presentesGrid.append(criarCartaoPresente(item)));
+  presentesGrid.append(criarCartaoPresente(presenteOutro));
+  if (!listaPresentesAtiva) return;
+  $('presentes-status').textContent = disponiveis.length
+    ? `${disponiveis.length} opções disponíveis`
+    : 'Todos os presentes da lista já foram escolhidos. Você ainda pode selecionar “Outro presente”.';
+};
+
+const carregarReservasPresentes = async () => {
+  listaPresentesAtiva = false;
+  $('presentes-status').textContent = 'Atualizando presentes disponíveis…';
+  renderizarPresentes();
+  if (!/^https:\/\//.test(supabasePresentesUrl) || !supabasePresentesChave) {
+    $('presentes-status').textContent = 'A lista está sendo preparada pelos noivos.';
+    return;
+  }
+  try {
+    const resposta = await fetch(
+      `${supabasePresentesUrl}/rest/v1/${tabelaPresentes}?select=presente_id`,
+      {
+        headers: {
+          apikey: supabasePresentesChave,
+          Authorization: `Bearer ${supabasePresentesChave}`
+        },
+        cache: 'no-store'
+      }
+    );
+    if (!resposta.ok) throw new Error('Lista indisponível');
+    const reservas = await resposta.json();
+    presentesReservados = new Set(
+      Array.isArray(reservas) ? reservas.map(item => item.presente_id).filter(Boolean) : []
+    );
+    listaPresentesAtiva = true;
+    renderizarPresentes();
+  } catch {
+    listaPresentesAtiva = false;
+    renderizarPresentes();
+    $('presentes-status').textContent = 'A lista ainda está sendo preparada. Tente novamente em instantes.';
+  }
+};
+
+const abrirListaPresentes = () => {
+  if (!presentesModal) return;
+  presentesModal.hidden = false;
+  bloquearPaginaPresentes();
+  carregarReservasPresentes();
+  window.setTimeout(() => $('presentes-fechar')?.focus(), 80);
+};
+
+const fecharListaPresentes = () => {
+  if (!presentesModal) return;
+  presentesModal.hidden = true;
+  liberarPaginaPresentes();
+  $('abrir-presentes')?.focus();
+};
+
+function abrirReservaPresente(item) {
+  if (!listaPresentesAtiva || !item) return;
+  presenteAtual = item;
+  window.clearTimeout(retornoPresenteTimer);
+  presenteReservaForm?.reset();
+  $('presente-reservar').disabled = false;
+  $('presente-reservar').textContent = 'Reservar este presente';
+  $('presente-reserva-status').textContent = '';
+
+  const imagem = $('presente-selecionado-img');
+  const simbolo = $('presente-selecionado-outro');
+  const campoOutro = $('presente-outro-campo');
+  const inputOutro = $('presente-outro-nome');
+  $('presente-selecionado-nome').textContent = item.nome;
+  imagem.hidden = Boolean(item.outro);
+  simbolo.hidden = !item.outro;
+  campoOutro.hidden = !item.outro;
+  inputOutro.required = Boolean(item.outro);
+  if (!item.outro) {
+    imagem.src = item.imagem;
+    imagem.alt = item.nome;
+  } else {
+    imagem.removeAttribute('src');
+    imagem.alt = '';
+  }
+
+  if (guest) $('presente-convidado-nome').value = guest.slice(0, 100);
+  presentesModal.hidden = true;
+  presenteReservaModal.hidden = false;
+  bloquearPaginaPresentes();
+  window.setTimeout(() => (item.outro ? inputOutro : $('presente-convidado-nome'))?.focus(), 80);
+}
+
+const voltarParaListaPresentes = () => {
+  presenteReservaModal.hidden = true;
+  presentesModal.hidden = false;
+  renderizarPresentes();
+  window.setTimeout(() => $('presentes-fechar')?.focus(), 80);
+};
+
+const fecharReservaPresente = () => {
+  window.clearTimeout(retornoPresenteTimer);
+  presenteReservaModal.hidden = true;
+  liberarPaginaPresentes();
+  $('abrir-presentes')?.focus();
+};
+
+$('abrir-presentes')?.addEventListener('click', abrirListaPresentes);
+$('presentes-fechar')?.addEventListener('click', fecharListaPresentes);
+$('presente-reserva-fechar')?.addEventListener('click', fecharReservaPresente);
+$('presente-voltar')?.addEventListener('click', voltarParaListaPresentes);
+presentesModal?.addEventListener('click', event => {
+  if (event.target === presentesModal) fecharListaPresentes();
+});
+presenteReservaModal?.addEventListener('click', event => {
+  if (event.target === presenteReservaModal) fecharReservaPresente();
+});
+document.addEventListener('keydown', event => {
+  if (event.key !== 'Escape') return;
+  if (presenteReservaModal && !presenteReservaModal.hidden) fecharReservaPresente();
+  else if (presentesModal && !presentesModal.hidden) fecharListaPresentes();
+});
+
+presenteReservaForm?.addEventListener('submit', async event => {
+  event.preventDefault();
+  if (!presenteAtual) return;
+  const dados = new FormData(presenteReservaForm);
+  if (dados.get('website')) return;
+  const nomeConvidado = String(dados.get('nome') || '').trim();
+  const presentePersonalizado = String(dados.get('outroPresente') || '').trim();
+  const nomePresente = presenteAtual.outro ? presentePersonalizado : presenteAtual.nome;
+  if (nomeConvidado.length < 2 || nomePresente.length < 2) {
+    $('presente-reserva-status').textContent = 'Preencha seu nome e o presente escolhido.';
+    return;
+  }
+
+  const idPresente = presenteAtual.outro
+    ? `outro-${typeof crypto.randomUUID === 'function' ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`}`
+    : presenteAtual.id;
+  const botao = $('presente-reservar');
+  botao.disabled = true;
+  botao.textContent = 'Reservando…';
+  $('presente-reserva-status').textContent = 'Registrando seu presente com carinho…';
+
+  try {
+    const resposta = await fetch(`${supabasePresentesUrl}/rest/v1/${tabelaPresentes}`, {
+      method: 'POST',
+      headers: {
+        apikey: supabasePresentesChave,
+        Authorization: `Bearer ${supabasePresentesChave}`,
+        'Content-Type': 'application/json',
+        Prefer: 'return=minimal'
+      },
+      body: JSON.stringify({
+        presente_id: idPresente,
+        presente_nome: nomePresente.slice(0, 120),
+        nome_convidado: nomeConvidado.slice(0, 100)
+      })
+    });
+
+    if (resposta.status === 409 && !presenteAtual.outro) {
+      presentesReservados.add(presenteAtual.id);
+      $('presente-reserva-status').textContent = 'Este presente acabou de ser escolhido por outra pessoa. Veja as opções que continuam disponíveis.';
+      botao.textContent = 'Presente já escolhido';
+      retornoPresenteTimer = window.setTimeout(voltarParaListaPresentes, 2400);
+      return;
+    }
+    if (!resposta.ok) throw new Error('Falha ao reservar');
+
+    if (!presenteAtual.outro) presentesReservados.add(presenteAtual.id);
+    $('presente-reserva-status').textContent = 'Presente reservado! Muito obrigado por fazer parte deste momento.';
+    botao.textContent = 'Presente reservado ✓';
+    retornoPresenteTimer = window.setTimeout(voltarParaListaPresentes, 2600);
+  } catch {
+    $('presente-reserva-status').textContent = 'Não foi possível reservar agora. Tente novamente em alguns instantes.';
+    botao.disabled = false;
+    botao.textContent = 'Reservar este presente';
+  }
+});
 
 // Pop-up de confirmação conectado ao Supabase quando configurado.
 const rsvpModal = $('rsvp-modal');
