@@ -969,3 +969,176 @@ main::before{
     animation:none!important;
   }
 }
+
+
+/* Confirmação e presentes na identidade do convite */
+.acoes-convidados{
+  position:relative;
+  width:min(calc(100% - 12px),450px);
+  margin:66px auto 12px;
+  padding:74px 28px 42px;
+  border:1px solid #b78b45;
+  border-radius:48% 48% 18px 18px / 11% 11% 2% 2%;
+  background:
+    radial-gradient(circle at 12% 8%,#d8e9ef99 0 10%,transparent 27%),
+    radial-gradient(circle at 88% 92%,#d8e9ef80 0 8%,transparent 25%),
+    linear-gradient(155deg,#fffdf5e8,#edf5f7dc);
+  box-shadow:0 18px 46px #334e6324,0 0 0 5px #fffaf1,0 0 0 6px #c5a3638f;
+  color:#536778;
+  overflow:hidden;
+  opacity:1;
+  transform:none;
+}
+.acoes-convidados::before{
+  content:'';
+  position:absolute;
+  z-index:0;
+  inset:12px;
+  border:1px solid #d2b775b8;
+  border-radius:48% 48% 10px 10px / 10% 10% 1% 1%;
+  pointer-events:none;
+}
+.acoes-convidados::after{
+  content:'D & N';
+  position:absolute;
+  z-index:0;
+  top:21px;
+  left:50%;
+  color:#a87c39;
+  font:500 15px/1 var(--serif);
+  letter-spacing:.16em;
+  transform:translateX(-50%);
+}
+.acoes-convidados>*{position:relative;z-index:1}
+.acoes-convidados.revelacao-pendente{
+  opacity:0;
+  transform:translateY(24px);
+  filter:blur(4px);
+}
+.acoes-convidados.revelacao-pendente.em-exibicao{
+  animation:revelaAcoesConvidados 1s cubic-bezier(.2,.74,.24,1) both;
+}
+.acoes-data-casamento{
+  display:block;
+  margin:0 0 30px;
+  color:#9a733b;
+  font:500 11px/1.3 var(--sans);
+  letter-spacing:.28em;
+}
+.acoes-titulo{
+  max-width:340px;
+  margin:0 auto 9px;
+  color:#40586c;
+  font:500 clamp(27px,7vw,38px)/1.12 var(--serif);
+}
+.acoes-prazo-intro{
+  margin:0 0 5px;
+  font:italic 19px/1.4 var(--serif);
+  color:#667b8c;
+}
+.acoes-prazo{
+  margin:0;
+  color:#9a7135;
+  font:500 clamp(29px,7vw,39px)/1.18 var(--serif);
+}
+.acoes-ornamento{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  width:82%;
+  margin:27px auto 24px;
+  color:#ae8549;
+}
+.acoes-ornamento::before,.acoes-ornamento::after{
+  content:'';
+  height:1px;
+  flex:1;
+  background:linear-gradient(90deg,transparent,#b48e54);
+}
+.acoes-ornamento::after{background:linear-gradient(90deg,#b48e54,transparent)}
+.acoes-ornamento span{font:21px/1 var(--serif);transform:rotate(-8deg)}
+.acoes-presentes-texto{
+  max-width:320px;
+  margin:0 auto 25px;
+  color:#5e7282;
+  font:italic 18px/1.45 var(--serif);
+}
+.acoes-botoes{display:grid;gap:13px}
+.acao-convite-botao{
+  display:grid;
+  grid-template-columns:48px 1fr 20px;
+  align-items:center;
+  gap:12px;
+  width:100%;
+  min-height:66px;
+  padding:8px 15px 8px 9px;
+  border:1px solid #8da8b9;
+  border-radius:999px;
+  background:#f9fcfdd9;
+  color:#36536a;
+  text-align:left;
+  text-decoration:none;
+  box-shadow:0 6px 18px #314e6420,inset 0 0 0 2px #fff;
+  transition:transform .25s ease,box-shadow .25s ease,background .25s ease;
+}
+.acao-convite-botao:hover{
+  background:#edf6f8;
+  color:#29475f;
+  transform:translateY(-2px);
+  box-shadow:0 10px 22px #314e6430,inset 0 0 0 2px #fff;
+}
+.acao-convite-icone{
+  display:grid;
+  place-items:center;
+  width:46px;
+  height:46px;
+  border:1px solid #b9965d;
+  border-radius:50%;
+  color:#9a733b;
+  background:#fffaf2;
+}
+.acao-convite-icone svg{
+  width:22px;
+  height:22px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.7;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.acao-convite-texto strong{
+  display:block;
+  font:600 12px/1.2 var(--sans);
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+.acao-convite-texto small{
+  display:block;
+  margin-top:4px;
+  color:#718594;
+  font:italic 14px/1.2 var(--serif);
+}
+.acao-convite-seta{
+  color:#a37c43;
+  font-size:22px;
+  line-height:1;
+}
+@keyframes revelaAcoesConvidados{
+  from{opacity:0;transform:translateY(24px);filter:blur(4px)}
+  to{opacity:1;transform:translateY(0);filter:blur(0)}
+}
+@media(max-width:390px){
+  .acoes-convidados{margin-top:58px;padding:68px 18px 34px}
+  .acao-convite-botao{grid-template-columns:44px 1fr 16px;gap:9px;padding-right:13px}
+  .acao-convite-icone{width:42px;height:42px}
+  .acao-convite-texto small{font-size:13px}
+}
+@media(prefers-reduced-motion:reduce){
+  .acoes-convidados{
+    opacity:1!important;
+    transform:none!important;
+    filter:none!important;
+    animation:none!important;
+  }
+}
