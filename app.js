@@ -135,5 +135,24 @@ $('abrir-pix').addEventListener('click', () => {
 });
 $('copiar-pix').addEventListener('click', async () => { try { await navigator.clipboard.writeText(c.pix.chave); text('pix-status', 'Chave copiada!'); } catch { text('pix-status', 'Selecione e copie a chave acima.'); } });
 if (/^55\d{10,11}$/.test(c.whatsapp)) external('whatsapp', `https://wa.me/${c.whatsapp}?text=${encodeURIComponent('Olá! Gostaria de falar sobre o casamento.')}`);
+// Movimento sutil do fundo, sincronizado com a rolagem.
+const fundoPagina = document.querySelector('main');
+const movimentoReduzido = window.matchMedia('(prefers-reduced-motion: reduce)');
+if (fundoPagina && !movimentoReduzido.matches) {
+  let fundoPendente = false;
+  const atualizarFundo = () => {
+    const deslocamento = Math.min(window.scrollY * 0.06, 220);
+    fundoPagina.style.setProperty('--fundo-scroll', `${deslocamento.toFixed(1)}px`);
+    fundoPendente = false;
+  };
+  window.addEventListener('scroll', () => {
+    if (!fundoPendente) {
+      fundoPendente = true;
+      window.requestAnimationFrame(atualizarFundo);
+    }
+  }, { passive: true });
+  atualizarFundo();
+}
+
 // Prévia estática: nenhum dado é enviado ou armazenado.
 $('rsvp').addEventListener('submit', event => event.preventDefault());
