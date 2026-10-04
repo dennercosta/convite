@@ -138,7 +138,7 @@ if (/^55\d{10,11}$/.test(c.whatsapp)) external('whatsapp', `https://wa.me/${c.wh
 // A mensagem é revelada como uma escrita delicada quando entra na tela.
 const mensagemDigitada = document.getElementById('texto-digitado');
 if (mensagemDigitada) {
-  const mensagemCompleta = mensagemDigitada.dataset.texto || '';
+  const mensagemCompleta = (mensagemDigitada.dataset.texto || '').replace(/\\n/g, '\n');
   const revelarMensagem = () => {
     if (mensagemDigitada.dataset.iniciada) return;
     mensagemDigitada.dataset.iniciada = 'true';
