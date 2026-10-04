@@ -768,3 +768,37 @@ main::before{
 @media(max-width:390px){
   .calendario-quadro .save-the-date{bottom:7.5%;font-size:40px}
 }
+
+/* Contagem regressiva logo abaixo do calendário */
+.contagem-calendario{
+  width:min(calc(100% - 24px),460px);
+  margin:28px auto 0;
+  padding:26px 16px 20px;
+  border-top:1px solid #b98e4a66;
+  border-bottom:1px solid #b98e4a45;
+  background:#fffaf16e;
+  backdrop-filter:blur(5px);
+  color:#635443;
+  opacity:0;
+  transform:translateY(16px);
+}
+.contagem-calendario .eyebrow{
+  margin-bottom:14px;
+  color:#987035;
+}
+.contagem-calendario .contador{margin:10px 0 8px}
+.contagem-calendario #contador-legenda{margin:0;font:italic 17px/1.4 var(--serif)}
+.calendario-casamento.em-exibicao .contagem-calendario{
+  animation:revelaContagem .9s cubic-bezier(.2,.74,.24,1) 1.35s both;
+}
+@keyframes revelaContagem{
+  from{opacity:0;transform:translateY(16px);filter:blur(3px)}
+  to{opacity:1;transform:translateY(0);filter:blur(0)}
+}
+@media(max-width:390px){
+  .contagem-calendario{margin-top:22px;padding:22px 10px 18px}
+  .contagem-calendario .contador{gap:13px}
+}
+@media(prefers-reduced-motion:reduce){
+  .contagem-calendario{opacity:1!important;transform:none!important;filter:none!important;animation:none!important}
+}
