@@ -250,5 +250,76 @@ if (fundoPagina && !movimentoReduzido.matches) {
   atualizarFundo();
 }
 
+// Pop-up de confirmação conectado ao Supabase quando configurado.
+const rsvpModal = $('rsvp-modal');
+const rsvpPopupForm = $('rsvp-popup-form');
+const abrirRsvpModal = () => {
+  if (!rsvpModal) return;
+  rsvpModal.hidden = false;
+  document.body.classList.add('modal-aberto');
+  window.setTimeout(() => $('rsvp-nome')?.focus(), 80);
+};
+const fecharRsvpModal = () => {
+  if (!rsvpModal) return;
+  rsvpModal.hidden = true;
+  document.body.classList.remove('modal-aberto');
+  $('abrir-rsvp-modal')?.focus();
+};
+$('abrir-rsvp-modal')?.addEventListener('click', abrirRsvpModal);
+$('rsvp-fechar')?.addEventListener('click', fecharRsvpModal);
+rsvpModal?.addEventListener('click', event => {
+  if (event.target === rsvpModal) fecharRsvpModal();
+});
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && rsvpModal && !rsvpModal.hidden) fecharRsvpModal();
+});
+rsvpPopupForm?.addEventListener('submit', async event => {
+  event.preventDefault();
+  const status = $('rsvp-popup-status');
+  const botao = $('rsvp-enviar');
+  const dados = new FormData(rsvpPopupForm);
+  if (dados.get('website')) return;
+  const nome = String(dados.get('nome') || '').trim();
+  const pessoas = Number(dados.get('pessoas'));
+  if (nome.length < 2 || !Number.isInteger(pessoas) || pessoas < 1 || pessoas > 20) {
+    status.textContent = 'Confira o nome e a quantidade de pessoas.';
+    return;
+  }
+  const supabase = c.supabase || {};
+  const url = String(supabase.url || '').replace(/\/$/, '');
+  const chave = String(supabase.anonKey || '');
+  const tabela = /^[a-z0-9_]+$/i.test(supabase.tabela || '') ? supabase.tabela : 'confirmacoes';
+  if (!/^https:\/\//.test(url) || !chave) {
+    status.textContent = 'O formulário está pronto. Falta apenas conectar o Supabase.';
+    return;
+  }
+  botao.disabled = true;
+  status.textContent = 'Enviando sua confirmação…';
+  try {
+    const resposta = await fetch(`${url}/rest/v1/${tabela}`, {
+      method: 'POST',
+      headers: {
+        apikey: chave,
+        Authorization: `Bearer ${chave}`,
+        'Content-Type': 'application/json',
+        Prefer: 'return=minimal'
+      },
+      body: JSON.stringify({
+        nome,
+        pessoas,
+        convidado: guest ? guest.slice(0, 120) : null
+      })
+    });
+    if (!resposta.ok) throw new Error('Falha ao registrar confirmação');
+    rsvpPopupForm.reset();
+    status.textContent = 'Presença confirmada! Ficamos muito felizes em celebrar com vocês.';
+    botao.textContent = 'Confirmação enviada ✓';
+    window.setTimeout(fecharRsvpModal, 2600);
+  } catch {
+    status.textContent = 'Não foi possível enviar agora. Tente novamente em alguns instantes.';
+    botao.disabled = false;
+  }
+});
+
 // Prévia estática: nenhum dado é enviado ou armazenado.
 $('rsvp').addEventListener('submit', event => event.preventDefault());
