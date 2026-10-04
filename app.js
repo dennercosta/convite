@@ -213,6 +213,24 @@ if (secaoLocalCerimonia) {
   }
 }
 
+// Revelação do bloco de confirmação e presentes.
+const secaoAcoesConvidados = document.querySelector('.acoes-convidados');
+if (secaoAcoesConvidados) {
+  secaoAcoesConvidados.classList.add('revelacao-pendente');
+  const revelarAcoesConvidados = () => secaoAcoesConvidados.classList.add('em-exibicao');
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
+    revelarAcoesConvidados();
+  } else {
+    const observadorAcoesConvidados = new IntersectionObserver(entries => {
+      if (entries.some(entry => entry.isIntersecting)) {
+        revelarAcoesConvidados();
+        observadorAcoesConvidados.disconnect();
+      }
+    }, { threshold: .14 });
+    observadorAcoesConvidados.observe(secaoAcoesConvidados);
+  }
+}
+
 // Movimento sutil do fundo, sincronizado com a rolagem.
 const fundoPagina = document.querySelector('main');
 const movimentoReduzido = window.matchMedia('(prefers-reduced-motion: reduce)');
