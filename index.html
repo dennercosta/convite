@@ -9,7 +9,7 @@
   <link rel="preload" as="image" href="./assets/folhas-inferiores.webp" type="image/webp">
   <link rel="preload" as="image" href="./assets/laco-inicial.webp" type="image/webp">
   <link rel="preload" as="image" href="./assets/apresentacao-moldura-v2.webp" type="image/webp">
-  <link rel="stylesheet" href="./style.css?v=confirmacao-presentes-20261004l"><script defer src="./config.js?v=confirmacao-20261004b"></script><script defer src="./app.js?v=confirmacao-presentes-20261004g"></script>
+  <link rel="stylesheet" href="./style.css?v=rsvp-popup-20261004m"><script defer src="./config.js?v=rsvp-popup-20261004c"></script><script defer src="./app.js?v=rsvp-popup-20261004h"></script>
 </head>
 <body class="convite-fechado">
   <div id="abertura" class="abertura" role="dialog" aria-modal="true" aria-label="Convite de casamento de Denner e Nágila">
@@ -112,13 +112,13 @@
           <div class="acoes-ornamento" aria-hidden="true"><span>❧</span></div>
           <p class="acoes-presentes-texto">E, para nos presentear, deixamos nossa lista de presentes logo abaixo.</p>
           <div class="acoes-botoes">
-            <a class="acao-convite-botao" href="#presenca">
+            <button type="button" id="abrir-rsvp-modal" class="acao-convite-botao">
               <span class="acao-convite-icone" aria-hidden="true">
                 <svg viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="15" rx="2"></rect><path d="M7 3.5v4M17 3.5v4M3.5 9.5h17M8 14l2.4 2.4L16 12"></path></svg>
               </span>
               <span class="acao-convite-texto"><strong>Confirmar presença</strong><small>Clique aqui para confirmar</small></span>
               <span class="acao-convite-seta" aria-hidden="true">›</span>
-            </a>
+            </button>
             <a class="acao-convite-botao" href="#presentes">
               <span class="acao-convite-icone" aria-hidden="true">
                 <svg viewBox="0 0 24 24"><path d="M4 10h16v10H4zM3 7h18v3H3zM12 7v13"></path><path d="M12 7H8.5A2.5 2.5 0 1 1 11 4.5L12 7ZM12 7h3.5A2.5 2.5 0 1 0 13 4.5L12 7Z"></path></svg>
@@ -141,6 +141,27 @@
       <footer><div class="monograma pequeno" data-iniciais>D & N</div><h2 class="esperando">ESTAMOS ESPERANDO POR VOCÊ!</h2><p>Que Deus seja o centro da nossa união e que este dia seja marcado por amor, alegria e gratidão.</p><h3 data-noivos>Denner & Nágila</h3><p class="data" data-data>12 • 12 • 2026</p><p>🤍 Com carinho, os noivos</p><a id="whatsapp" class="link" target="_blank" rel="noopener" hidden>Falar com os noivos no WhatsApp ↗</a></footer>
     </main>
     <nav aria-label="Seções do convite"><a href="#inicio">Início</a><a href="#celebracao">O grande dia</a><a href="#presentes">Presentes</a><a href="#presenca">Presença</a></nav>
+  </div>
+  <div id="rsvp-modal" class="rsvp-modal" hidden>
+    <div class="rsvp-dialog" role="dialog" aria-modal="true" aria-labelledby="rsvp-popup-titulo">
+      <button type="button" id="rsvp-fechar" class="rsvp-fechar" aria-label="Fechar confirmação">×</button>
+      <span class="eyebrow">CONFIRMAÇÃO DE PRESENÇA</span>
+      <h2 id="rsvp-popup-titulo">Estaremos esperando por vocês!</h2>
+      <p class="rsvp-intro">Informe o nome da família e quantas pessoas estarão conosco neste dia especial.</p>
+      <form id="rsvp-popup-form" class="rsvp-popup-form">
+        <label for="rsvp-nome">Nome completo
+          <input id="rsvp-nome" name="nome" required minlength="2" maxlength="100" autocomplete="name" placeholder="Digite seu nome">
+        </label>
+        <label for="rsvp-pessoas">Quantidade de pessoas
+          <input id="rsvp-pessoas" name="pessoas" type="number" min="1" max="20" value="1" required inputmode="numeric">
+          <small>Inclua você e os familiares que fazem parte do seu convite.</small>
+        </label>
+        <div class="armadilha" aria-hidden="true"><label for="rsvp-website">Deixe vazio<input id="rsvp-website" name="website" tabindex="-1" autocomplete="off"></label></div>
+        <button type="submit" id="rsvp-enviar" class="rsvp-enviar">Enviar confirmação</button>
+        <p id="rsvp-popup-status" class="rsvp-status" role="status" aria-live="polite"></p>
+        <p class="rsvp-privacidade">As informações serão utilizadas somente para a organização do casamento.</p>
+      </form>
+    </div>
   </div>
   <button id="musica" class="musica" hidden aria-label="Tocar música">♫</button><noscript>Ative o JavaScript para abrir o convite e confirmar sua presença.</noscript>
 </body></html>
