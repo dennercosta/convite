@@ -816,14 +816,14 @@ main::before{
 .calendario-quadro .save-the-date span{
   display:inline-block;
   max-width:100%;
-  opacity:0;
+  opacity:1;
   clip-path:none;
-  filter:blur(4px);
-  transform:translateY(12px) scale(.96);
+  filter:none;
+  transform:none;
   white-space:nowrap;
 }
 .calendario-casamento.em-exibicao .save-the-date span{
-  animation:apareceSaveDate 1.15s cubic-bezier(.2,.75,.25,1) .55s both;
+  animation:apareceSaveDate 1s cubic-bezier(.2,.75,.25,1) .25s both;
 }
 .calendario-quadro .save-the-date span::after{display:none}
 @keyframes apareceSaveDate{
