@@ -135,6 +135,46 @@ $('abrir-pix').addEventListener('click', () => {
 });
 $('copiar-pix').addEventListener('click', async () => { try { await navigator.clipboard.writeText(c.pix.chave); text('pix-status', 'Chave copiada!'); } catch { text('pix-status', 'Selecione e copie a chave acima.'); } });
 if (/^55\d{10,11}$/.test(c.whatsapp)) external('whatsapp', `https://wa.me/${c.whatsapp}?text=${encodeURIComponent('Olá! Gostaria de falar sobre o casamento.')}`);
+// A mensagem é revelada como uma escrita delicada quando entra na tela.
+const mensagemDigitada = document.getElementById('texto-digitado');
+if (mensagemDigitada) {
+  const mensagemCompleta = mensagemDigitada.dataset.texto || '';
+  const revelarMensagem = () => {
+    if (mensagemDigitada.dataset.iniciada) return;
+    mensagemDigitada.dataset.iniciada = 'true';
+    document.getElementById('mensagem-especial')?.classList.add('em-exibicao');
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      mensagemDigitada.textContent = mensagemCompleta;
+      return;
+    }
+    mensagemDigitada.classList.add('digitando');
+    let indiceMensagem = 0;
+    const digitar = () => {
+      indiceMensagem += 1;
+      mensagemDigitada.textContent = mensagemCompleta.slice(0, indiceMensagem);
+      if (indiceMensagem >= mensagemCompleta.length) {
+        mensagemDigitada.classList.remove('digitando');
+        return;
+      }
+      const caractere = mensagemCompleta[indiceMensagem - 1];
+      const pausa = caractere === '\n' ? 240 : /[.!?]/.test(caractere) ? 180 : /[,;]/.test(caractere) ? 85 : 24;
+      window.setTimeout(digitar, pausa);
+    };
+    digitar();
+  };
+  if ('IntersectionObserver' in window) {
+    const observadorMensagem = new IntersectionObserver(entries => {
+      if (entries.some(entry => entry.isIntersecting)) {
+        revelarMensagem();
+        observadorMensagem.disconnect();
+      }
+    }, { threshold: .28 });
+    observadorMensagem.observe(mensagemDigitada);
+  } else {
+    revelarMensagem();
+  }
+}
+
 // Movimento sutil do fundo, sincronizado com a rolagem.
 const fundoPagina = document.querySelector('main');
 const movimentoReduzido = window.matchMedia('(prefers-reduced-motion: reduce)');
