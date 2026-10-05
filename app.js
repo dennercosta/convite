@@ -128,7 +128,7 @@ for (const photo of c.fotos) {
 }
 if (c.pix.chave && c.pix.titular) {
   $('pix').hidden = false; $('pix-pendente').hidden = true;
-  text('pix-chave', c.pix.chave); text('pix-titular', c.pix.titular); text('pix-banco', c.pix.banco);
+  text('pix-chave', c.pix.chaveExibicao || c.pix.chave); text('pix-titular', c.pix.titular); text('pix-banco', c.pix.banco);
 }
 const pixModal = $('pix-modal');
 const abrirPixModal = () => {
