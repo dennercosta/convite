@@ -823,7 +823,8 @@ recadoForm?.addEventListener('submit', async event => {
 if (recadosTrack) {
   renderizarRecados();
   carregarRecados();
-  window.setInterval(() => carregarRecados({ silencioso: true }), 20000);
+  // Mantém a experiência atualizada mesmo se a biblioteca Realtime externa não carregar.
+  window.setInterval(() => carregarRecados({ silencioso: true }), 5000);
   if (/^https:\/\//.test(recadosUrl) && recadosChave && window.supabase?.createClient) {
     try {
       const clienteRecados = window.supabase.createClient(recadosUrl, recadosChave, {
