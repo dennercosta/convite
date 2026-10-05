@@ -9,7 +9,7 @@
   <link rel="preload" as="image" href="./assets/folhas-inferiores.webp" type="image/webp">
   <link rel="preload" as="image" href="./assets/laco-inicial.webp" type="image/webp">
   <link rel="preload" as="image" href="./assets/apresentacao-moldura-v2.webp" type="image/webp">
-  <link rel="stylesheet" href="./style.css?v=acoes-topo-20261004b"><script defer src="./config.js?v=presentes-20261004a"></script><script defer src="./app.js?v=correcao-animacoes-20261004a"></script>
+  <link rel="stylesheet" href="./style.css?v=recados-20261004a"><script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script><script defer src="./config.js?v=recados-20261004a"></script><script defer src="./app.js?v=recados-20261004a"></script>
 </head>
 <body class="convite-fechado">
   <div id="abertura" class="abertura" role="dialog" aria-modal="true" aria-label="Convite de casamento de Denner e Nágila">
@@ -137,15 +137,72 @@
         </div>
       </section>
 
-      <section class="fe"><span class="eyebrow">AMOR QUE SE TORNA ALIANÇA</span><h2>Dois caminhos.<br>Uma promessa.</h2><p id="mensagem-fe"></p><small id="referencia"></small></section>
+      <section id="alianca" class="fe fe-alianca">
+        <span class="eyebrow">AMOR QUE SE TORNA ALIANÇA</span>
+        <h2>Dois caminhos.<br>Uma promessa.</h2>
+        <p id="mensagem-fe"></p>
+        <small id="referencia"></small>
+        <div id="encontro-casal" class="encontro-casal" aria-describedby="encontro-instrucao">
+          <div class="luz-do-ceu" aria-hidden="true"><span></span><span></span><span></span></div>
+          <div id="casal-palco" class="casal-palco">
+            <span class="caminho-encontro" aria-hidden="true"></span>
+            <button id="noiva-arrastavel" class="figura-casal noiva-arrastavel" type="button" aria-label="Arraste a noiva até o noivo">
+              <svg viewBox="0 0 90 190" role="presentation">
+                <path class="veu" d="M45 22C25 28 15 49 18 76c2 17-6 31-11 41 17-4 28-13 35-27"></path>
+                <circle cx="47" cy="30" r="13"></circle>
+                <path class="vestido" d="M39 48c-4 17-8 31-11 45L10 166c22 11 48 11 70 0L61 93c-3-14-7-28-11-45z"></path>
+                <path class="braco" d="M39 57c-10 17-15 31-18 47M55 57c8 14 12 27 14 42"></path>
+              </svg>
+            </button>
+            <span class="coracao-encontro" aria-hidden="true">♡</span>
+            <div id="noivo-destino" class="figura-casal noivo-destino" aria-hidden="true">
+              <svg viewBox="0 0 90 190" role="presentation">
+                <circle cx="45" cy="30" r="13"></circle>
+                <path class="terno" d="M28 49 17 101l12 8 5-21v79h22V88l5 21 12-8-11-52-17 10z"></path>
+                <path class="camisa" d="m36 49 9 10 9-10-4 40H40z"></path>
+                <path class="pernas" d="M36 164v22M54 164v22"></path>
+              </svg>
+            </div>
+          </div>
+          <p id="encontro-instrucao" class="encontro-instrucao"><span aria-hidden="true">↔</span> Arraste a noiva até o noivo</p>
+          <p id="encontro-status" class="sr-only" aria-live="polite"></p>
+        </div>
+      </section>
       <section id="historia" hidden><span class="eyebrow">ATÉ CHEGARMOS AQUI</span><h2>Nossa história</h2><p id="texto-historia" class="prewrap"></p></section>
       <section id="galeria" hidden><span class="eyebrow">PEQUENOS INSTANTES, GRANDES MEMÓRIAS</span><h2>Nosso amor em fotos</h2><div id="fotos" class="fotos"></div></section>
-      <section id="presenca"><span class="eyebrow">VAMOS VIVER ESSE MOMENTO JUNTOS?</span><h2>Confirmação de presença</h2><p id="prazo">Para que possamos preparar tudo com muito carinho, pedimos que confirme sua presença até [data].</p><p class="aviso-previa" id="aviso-previa">Prévia do convite — a confirmação de presença estará disponível na versão final.</p><form id="rsvp" aria-describedby="aviso-previa"><fieldset disabled><legend class="sr-only">Modelo do formulário de confirmação</legend><label>Seu nome completo<input name="nome" required minlength="2" maxlength="100" autocomplete="name"></label><label>Você poderá estar conosco?<select name="presenca" required><option value="">Selecione uma opção</option><option value="sim">Sim, estarei presente!</option><option value="nao">Infelizmente, não poderei ir.</option></select></label><label id="grupo-label">Pessoas do seu convite, incluindo você<input name="pessoas" type="number" min="1" max="20" value="1" required><small>Inclua somente as pessoas que foram convidadas com você.</small></label><label>Recado para os noivos <span class="muted">(opcional)</span><textarea name="mensagem" rows="4" maxlength="1000" placeholder="Deixe seu carinho e suas orações…"></textarea></label><label class="check"><input name="publicar" type="checkbox"> Autorizo exibir meu primeiro nome e recado no mural, após aprovação.</label><div class="armadilha" aria-hidden="true"><label>Deixe vazio<input name="website" tabindex="-1" autocomplete="off"></label></div><p class="privacidade">Sua resposta fica reservada aos noivos para organizar o casamento. Para corrigir ou excluir sua resposta, entre em contato com eles.</p><button type="submit">Confirmação indisponível nesta prévia</button><p id="rsvp-status" role="status" aria-live="polite"></p></fieldset></form></section>
+      <section id="recados" class="mural-recados" aria-labelledby="recados-titulo">
+        <span class="eyebrow">CARINHO EM PALAVRAS</span>
+        <h2 id="recados-titulo">Deixe um recado para nós</h2>
+        <p class="recados-intro">Compartilhe seu carinho, sua oração ou uma lembrança especial. Sua mensagem fará parte deste momento.</p>
+        <div class="recados-quadro">
+          <form id="recado-form" class="recado-form">
+            <label for="recado-nome">Seu nome
+              <input id="recado-nome" name="nome" required minlength="2" maxlength="60" autocomplete="name" placeholder="Digite seu nome">
+            </label>
+            <label for="recado-mensagem">Seu recado
+              <textarea id="recado-mensagem" name="mensagem" required minlength="3" maxlength="360" rows="4" placeholder="Escreva uma mensagem para os noivos…"></textarea>
+            </label>
+            <div class="armadilha" aria-hidden="true"><label for="recado-site">Deixe vazio<input id="recado-site" name="website" tabindex="-1" autocomplete="off"></label></div>
+            <button id="recado-enviar" type="submit">Enviar recado</button>
+            <p id="recado-status" class="recado-status" role="status" aria-live="polite"></p>
+          </form>
+          <div id="carrossel-recados" class="carrossel-recados" aria-label="Recados deixados pelos convidados">
+            <div class="recados-janela">
+              <div id="recados-track" class="recados-track"></div>
+              <p id="recados-vazio" class="recados-vazio">Seja a primeira pessoa a deixar um recado para os noivos.</p>
+            </div>
+            <div class="recados-controles">
+              <button id="recado-anterior" type="button" aria-label="Recado anterior">‹</button>
+              <span id="recados-indicador">0 / 0</span>
+              <button id="recado-proximo" type="button" aria-label="Próximo recado">›</button>
+            </div>
+          </div>
+        </div>
+      </section>
       <section id="aproveitar"><span class="eyebrow">CELEBRAR COM LEVEZA</span><h2>Para aproveitar<br>o nosso dia</h2><p>Nossa celebração será realizada ao ar livre, em um ambiente especial e cheio de natureza.</p><p id="traje" class="traje">Traje: [esporte fino / social]</p><p>Para maior conforto, recomendamos escolher um calçado adequado ao local.</p><p>E o mais importante: venha celebrar, sorrir e aproveitar esse momento conosco!</p></section>
-      <section id="mural" class="fe"><span class="eyebrow">CARINHO EM PALAVRAS</span><h2>Recados & orações</h2><div id="recados"><p>O mural de recados estará disponível na versão final.</p></div></section>
       <footer><div class="monograma pequeno" data-iniciais>D & N</div><h2 class="esperando">ESTAMOS ESPERANDO POR VOCÊ!</h2><p>Que Deus seja o centro da nossa união e que este dia seja marcado por amor, alegria e gratidão.</p><h3 data-noivos>Denner & Nágila</h3><p class="data" data-data>12 • 12 • 2026</p><p>🤍 Com carinho, os noivos</p><a id="whatsapp" class="link" target="_blank" rel="noopener" hidden>Falar com os noivos no WhatsApp ↗</a></footer>
     </main>
-    <nav aria-label="Seções do convite"><a href="#inicio">Início</a><a href="#presenca">Presença</a></nav>
+    <nav aria-label="Seções do convite"><a href="#inicio">Início</a><a href="#recados">Recados</a></nav>
   </div>
   <div id="rsvp-modal" class="rsvp-modal" hidden>
     <div class="rsvp-dialog" role="dialog" aria-modal="true" aria-labelledby="rsvp-popup-titulo">
