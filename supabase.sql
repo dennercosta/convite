@@ -76,3 +76,60 @@ create policy "Convidados podem reservar presentes"
       or presente_id ~ '^outro-[A-Za-z0-9-]{8,}$'
     )
   );
+
+
+-- Mural público de recados.
+-- Os convidados podem publicar e ler somente os recados visíveis.
+-- O conteúdo é exibido com textContent no site para evitar injeção de HTML.
+create table if not exists public.recados (
+  id bigint generated always as identity primary key,
+  nome text not null
+    check (char_length(trim(nome)) between 2 and 60),
+  mensagem text not null
+    check (char_length(trim(mensagem)) between 3 and 360),
+  aprovado boolean not null default true,
+  created_at timestamptz not null default now()
+);
+
+alter table public.recados enable row level security;
+
+revoke all on table public.recados from anon;
+grant usage on schema public to anon;
+grant select (id, nome, mensagem, aprovado, created_at)
+  on table public.recados to anon;
+grant insert (nome, mensagem)
+  on table public.recados to anon;
+grant usage on sequence public.recados_id_seq to anon;
+
+drop policy if exists "Convidados podem ler recados visiveis" on public.recados;
+create policy "Convidados podem ler recados visiveis"
+  on public.recados
+  for select
+  to anon
+  using (aprovado = true);
+
+drop policy if exists "Convidados podem enviar recados" on public.recados;
+create policy "Convidados podem enviar recados"
+  on public.recados
+  for insert
+  to anon
+  with check (
+    char_length(trim(nome)) between 2 and 60
+    and char_length(trim(mensagem)) between 3 and 360
+    and aprovado = true
+  );
+
+-- Habilita INSERTs do mural no Supabase Realtime sem duplicar a publicação.
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_publication_tables
+    where pubname = 'supabase_realtime'
+      and schemaname = 'public'
+      and tablename = 'recados'
+  ) then
+    alter publication supabase_realtime add table public.recados;
+  end if;
+end
+$$;
