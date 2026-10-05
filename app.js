@@ -82,7 +82,25 @@ text('convite', c.convite); text('mensagem-fe', c.mensagemFe); text('referencia'
 const guest = new URLSearchParams(location.search).get('para') || new URLSearchParams(location.search).get('to');
 if (guest && $('convidado')) text('convidado', guest.slice(0, 120));
 let audio;
-if (c.musica) { audio = new Audio(c.musica); audio.loop = true; }
+let musicaAberta = false, musicaDesejada = true, fadeMusica;
+if (c.musica) { audio = new Audio(c.musica); audio.loop = true; audio.volume = 0; audio.preload = 'none'; }
+function revelarMusica() {
+  musicaAberta = true;
+  if (!audio || !musicaDesejada) return;
+  audio.play().then(() => {
+    $('musica').setAttribute('aria-label', 'Pausar música');
+    clearInterval(fadeMusica);
+    fadeMusica = setInterval(() => {
+      audio.volume = Math.min(.14, audio.volume + .005);
+      if (audio.volume >= .14) clearInterval(fadeMusica);
+    }, 100);
+  }).catch(() => { $('musica').setAttribute('aria-label', 'Tocar música'); });
+}
+document.addEventListener('visibilitychange', () => {
+  if (!audio || !musicaAberta) return;
+  if (document.hidden) { clearInterval(fadeMusica); audio.pause(); }
+  else if (musicaDesejada) revelarMusica();
+});
 $('abrir').addEventListener('click', () => {
   const abertura = $('abertura');
   const laco = $('laco');
@@ -105,6 +123,7 @@ $('abrir').addEventListener('click', () => {
     window.setTimeout(() => {
       abertura.hidden = true;
       sonsConvite.revelar();
+      revelarMusica();
       document.body.classList.remove('convite-fechado');
       $('conteudo').inert = false;
       $('conteudo').classList.remove('conteudo-revelando');
@@ -146,10 +165,11 @@ $('abrir').addEventListener('click', () => {
     terminarLaco();
   }
 });
-$('musica').addEventListener('click', async () => {
+$('musica').addEventListener('click', () => {
   if (!audio) return;
-  if (audio.paused) { try { await audio.play(); $('musica').setAttribute('aria-label', 'Pausar música'); } catch { $('musica').title = 'Não foi possível carregar a música.'; } }
-  else { audio.pause(); $('musica').setAttribute('aria-label', 'Tocar música'); }
+  musicaDesejada = !musicaDesejada;
+  if (musicaDesejada) revelarMusica();
+  else { clearInterval(fadeMusica); audio.pause(); $('musica').setAttribute('aria-label', 'Tocar música'); }
 });
 if (c.historia) { $('historia').hidden = false; text('texto-historia', c.historia); }
 if (c.fotoCapa) { document.querySelector('.lateral').classList.add('fotografica'); document.querySelector('.lateral').style.backgroundImage = `linear-gradient(#203b5b77,#203b5baa),url(${JSON.stringify(c.fotoCapa)})`; }
@@ -918,4 +938,29 @@ if (recadosTrack) {
         .subscribe();
     } catch {}
   }
+}
+
+// Flores em espaços próprios: revelação e paralaxe sem sobrepor mensagens.
+const floresIntervalos = [...document.querySelectorAll('.intervalo-floral')];
+const floresReduzir = window.matchMedia('(prefers-reduced-motion: reduce)');
+if ('IntersectionObserver' in window && !floresReduzir.matches) {
+  const observarFlores = new IntersectionObserver(entries => {
+    for (const entry of entries) if (entry.isIntersecting) { entry.target.classList.add('flor-revelada'); observarFlores.unobserve(entry.target); }
+  }, { threshold: .15 });
+  floresIntervalos.forEach(el => observarFlores.observe(el));
+} else floresIntervalos.forEach(el => el.classList.add('flor-revelada'));
+let quadroFlores = 0;
+function moverFlores() {
+  quadroFlores = 0;
+  floresIntervalos.forEach((el, i) => {
+    const r = el.getBoundingClientRect();
+    if (r.bottom < -100 || r.top > innerHeight + 100) return;
+    const y = Math.max(-18, Math.min(18, (innerHeight / 2 - r.top - r.height / 2) * .065));
+    el.style.setProperty('--flor-y', y.toFixed(1) + 'px');
+    el.style.setProperty('--flor-inclinacao', (y * (i % 2 ? -.09 : .09)).toFixed(2) + 'deg');
+  });
+}
+if (!floresReduzir.matches) {
+  window.addEventListener('scroll', () => { if (!quadroFlores) quadroFlores = requestAnimationFrame(moverFlores); }, { passive: true });
+  window.addEventListener('resize', moverFlores); moverFlores();
 }

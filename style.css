@@ -1845,3 +1845,14 @@ button.acao-convite-botao{font-family:inherit;cursor:pointer}
 @media(prefers-reduced-motion:reduce){.indicador-rolagem svg{animation:none}}
 
 .indicador-rolagem{position:relative;z-index:2}
+
+/* Respiro floral entre as seções, sempre no fluxo da página */
+.intervalo-floral{position:relative;display:flex;justify-content:center;align-items:center;min-height:210px;padding:34px 28px;overflow:hidden;pointer-events:none;isolation:isolate}
+.flor-paralaxe{width:140px;max-width:40%;transform:translate3d(0,var(--flor-y,0px),0) rotate(var(--flor-inclinacao,0deg));will-change:transform}
+.flor-entre-secoes{display:block;width:100%;height:auto;max-height:185px;object-fit:contain;opacity:0;transform:translateY(20px) scale(.94);transition:opacity 1.3s ease,transform 1.6s ease;filter:drop-shadow(0 4px 7px #59706d0b)}
+.flor-revelada .flor-entre-secoes{opacity:.9;transform:translateY(0) scale(1);animation:flor-brisa 7s ease-in-out 1.6s infinite alternate;transform-origin:50% 95%}
+.intervalo-floral-2,.intervalo-floral-4{justify-content:flex-end;padding-right:15%}
+.intervalo-floral-1,.intervalo-floral-3{justify-content:flex-start;padding-left:15%}
+.intervalo-floral-5 .flor-paralaxe{width:165px}
+@keyframes flor-brisa{from{transform:rotate(-1.2deg)}to{transform:rotate(1.2deg)}}
+@media(prefers-reduced-motion:reduce){.flor-paralaxe{transform:none;will-change:auto}.flor-entre-secoes,.flor-revelada .flor-entre-secoes{opacity:.9;transform:none;transition:none;animation:none}}

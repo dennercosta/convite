@@ -63,5 +63,5 @@ window.CASAMENTO = {
   },
   fotoCapa: "", // Ex.: /fotos/casal.jpg — coloque o arquivo em public/fotos/.
   fotos: [], // Ex.: [{ src: "/fotos/casal.jpg", legenda: "Nosso momento" }]
-  musica: "" // Ex.: /musica.mp3. Use uma faixa que você tenha direito de compartilhar.
+  musica: "./assets/musica-convite.mp3" // Ex.: /musica.mp3. Use uma faixa que você tenha direito de compartilhar.
 };
