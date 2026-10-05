@@ -1801,3 +1801,37 @@ button.acao-convite-botao{font-family:inherit;cursor:pointer}
   .encontro-casal.unidos .coracao-encontro{animation:none;opacity:.85;transform:none}
   .recados-track,.noiva-arrastavel.mover-suave{transition:none}
 }
+
+/* Molduras dos cuidados e encerramento */
+.secao-cuidados,.encerramento-convite{padding:40px 20px 55px;border:0;background:transparent}
+.encerramento-convite{padding-bottom:110px}
+.quadro-identidade{position:relative;isolation:isolate;max-width:500px;margin:0 auto;padding:45px 30px 35px;border:1px solid #c5a369;border-radius:72px 72px 12px 12px;background:linear-gradient(135deg,rgba(255,252,242,.94),rgba(245,238,222,.9));box-shadow:0 14px 35px #314d6410,inset 0 0 0 5px #fffcf077,inset 0 0 0 6px #c5a36970;color:#665540}
+.quadro-identidade:before{content:'';position:absolute;inset:10px;border:1px solid #c5a36966;border-radius:62px 62px 5px 5px;pointer-events:none;z-index:-1}
+.quadro-identidade .eyebrow{color:#9c7c45;letter-spacing:.2em;font-size:9px;margin:12px 0 20px}
+.floreio-identidade{display:block;color:#b38a45;font:38px/1 Georgia,serif;margin:0 auto 17px}
+.floreio-final{transform:rotate(180deg);margin:24px auto 0;font-size:28px}
+.quadro-identidade h2{color:#655038;font-size:clamp(34px,7vw,46px);line-height:1.12;margin:0 0 28px}
+.quadro-identidade h2 em{font-weight:400;color:#a37c3c}
+.cuidado-item{padding:24px 0;border-top:1px solid #c5a36944}
+.icone-cuidado{display:block;width:42px;height:42px;margin:0 auto 10px;color:#ae8545}
+.icone-cuidado svg{width:100%;height:100%}
+.cuidado-item h3{font:italic 500 25px/1.2 var(--serif);color:#776044;margin:0 0 10px}
+.cuidado-item p,.quadro-encerramento>p:not(.data):not(.assinatura-noivos){font:400 17px/1.65 var(--serif);margin:0;color:#6e5e4b}
+.cuidados-final{font:italic 20px/1.4 var(--serif);padding-top:22px;border-top:1px solid #c5a36944;margin:0;color:#9b783e}
+.quadro-encerramento{padding-top:38px}
+.quadro-encerramento .monograma{color:#a58247;border-color:#bea168;outline-color:#bea16866;background:#fffaf055;width:76px;height:88px;margin:14px auto 30px;font-size:27px}
+.quadro-encerramento .esperando{font-size:clamp(34px,7vw,44px);text-transform:none}
+.divisor-identidade{display:block;width:85px;height:1px;background:linear-gradient(90deg,transparent,#c5a369,transparent);margin:26px auto}
+.quadro-encerramento>h3{font:italic 500 35px/1.2 var(--serif);color:#8a6936;margin:0 0 15px}
+.quadro-encerramento .data{color:#8b774f;font-size:11px;letter-spacing:.22em;margin:0 0 25px}
+.assinatura-noivos{display:flex;align-items:center;justify-content:center;gap:8px;font:italic 17px/1.4 var(--serif);color:#8a775a;margin:0}
+.assinatura-noivos svg{width:21px;height:21px;color:#b59152}
+.quadro-encerramento .link{color:#866536}
+@media(max-width:400px){.secao-cuidados,.encerramento-convite{padding-left:15px;padding-right:15px}.quadro-identidade{padding-left:24px;padding-right:24px}.cuidado-item p,.quadro-encerramento>p:not(.data):not(.assinatura-noivos){font-size:16px}}
+/* Transição gradual após o laço */
+#conteudo.conteudo-revelando{opacity:0;transform:translateY(12px);filter:blur(4px)}
+#conteudo.conteudo-revelando.conteudo-aberto{opacity:1;transform:translateY(0);filter:blur(0);transition:opacity 1.75s ease,transform 1.9s cubic-bezier(.2,.7,.3,1),filter 1.65s ease}
+.abertura{transition:opacity 1.8s ease,visibility 1.8s ease}
+.abertura.desvanecendo{opacity:0;pointer-events:none}
+.abertura.abrindo .capa-folha{transition-duration:2.1s;transition-timing-function:cubic-bezier(.22,.61,.36,1)}
+@media(prefers-reduced-motion:reduce){#conteudo.conteudo-revelando{transform:none;filter:none}.abertura{transition:none}}
