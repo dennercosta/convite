@@ -27,15 +27,20 @@ $('abrir').addEventListener('click', () => {
     if (abertura.classList.contains('abrindo')) return;
     abertura.classList.remove('desatando');
     abertura.classList.add('abrindo');
+    $('conteudo').classList.add('conteudo-revelando');
+    window.setTimeout(() => {
+      $('conteudo').classList.add('conteudo-aberto');
+      abertura.classList.add('desvanecendo');
+    }, reduzirMovimento ? 0 : 320);
     window.setTimeout(() => {
       abertura.hidden = true;
       document.body.classList.remove('convite-fechado');
       $('conteudo').inert = false;
-      $('conteudo').classList.add('conteudo-aberto');
+      $('conteudo').classList.remove('conteudo-revelando');
       $('inicio').tabIndex = -1;
       $('inicio').focus({ preventScroll: true });
       if (audio) $('musica').hidden = false;
-    }, reduzirMovimento ? 80 : 1650);
+    }, reduzirMovimento ? 80 : 2450);
   };
 
   if (reduzirMovimento || !laco || !laco.canPlayType('video/webm; codecs="vp9"')) {
@@ -82,7 +87,7 @@ text('celebracao-horario', evento.horario || 'Horário a informar');
 text('celebracao-local', evento.local || 'Local a informar');
 text('celebracao-endereco', evento.endereco || 'Endereço a informar');
 external('celebracao-mapa', evento.mapa);
-text('traje', `Traje: ${c.traje || '[esporte fino / social]'}`);
+if (c.traje) { text('traje', c.traje); const blocoTraje = $('cuidado-traje'); if (blocoTraje) blocoTraje.hidden = false; }
 text('prazo', `Para que possamos preparar tudo com muito carinho, pedimos que confirme sua presença até ${c.prazoConfirmacao || '[data]'}.`);
 const eventDate = new Date(c.dataISO);
 if (c.dataISO && Number.isFinite(eventDate.getTime())) {
