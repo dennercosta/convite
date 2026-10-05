@@ -38,7 +38,7 @@ const sonsConvite = (() => {
       const brisa = ctx.createOscillator(), variacao = ctx.createGain();
       brisa.frequency.value = .18; variacao.gain.value = 180; brisa.connect(variacao); variacao.connect(filtro.frequency); brisa.start();
     }
-    ambiente.gain.setTargetAtTime(ativo && liberado && cenaVisivel && !document.hidden ? .11 : 0, ctx.currentTime, .55);
+    ambiente.gain.setTargetAtTime(ativo && liberado && cenaVisivel && !document.hidden ? .065 : 0, ctx.currentTime, .55);
   }
   function atualizarBotao() {
     const b = botao(); if (!b) return;
@@ -91,8 +91,8 @@ function revelarMusica() {
     $('musica').setAttribute('aria-label', 'Pausar música');
     clearInterval(fadeMusica);
     fadeMusica = setInterval(() => {
-      audio.volume = Math.min(.14, audio.volume + .005);
-      if (audio.volume >= .14) clearInterval(fadeMusica);
+      audio.volume = Math.min(.161, audio.volume + .005);
+      if (audio.volume >= .161) clearInterval(fadeMusica);
     }, 100);
   }).catch(() => { $('musica').setAttribute('aria-label', 'Tocar música'); });
 }
@@ -945,16 +945,16 @@ const floresIntervalos = [...document.querySelectorAll('.intervalo-floral')];
 const floresReduzir = window.matchMedia('(prefers-reduced-motion: reduce)');
 if ('IntersectionObserver' in window && !floresReduzir.matches) {
   const observarFlores = new IntersectionObserver(entries => {
-    for (const entry of entries) if (entry.isIntersecting) { entry.target.classList.add('flor-revelada'); observarFlores.unobserve(entry.target); }
+    for (const entry of entries) if (entry.isIntersecting) { entry.target.parentElement.classList.add('flor-revelada'); observarFlores.unobserve(entry.target); }
   }, { threshold: .15 });
-  floresIntervalos.forEach(el => observarFlores.observe(el));
+  floresIntervalos.forEach(el => observarFlores.observe(el.querySelector('.flor-paralaxe')));
 } else floresIntervalos.forEach(el => el.classList.add('flor-revelada'));
 let quadroFlores = 0;
 function moverFlores() {
   quadroFlores = 0;
   floresIntervalos.forEach((el, i) => {
     const r = el.getBoundingClientRect();
-    if (r.bottom < -100 || r.top > innerHeight + 100) return;
+    if (r.top < -200 || r.top > innerHeight + 200) return;
     const y = Math.max(-18, Math.min(18, (innerHeight / 2 - r.top - r.height / 2) * .065));
     el.style.setProperty('--flor-y', y.toFixed(1) + 'px');
     el.style.setProperty('--flor-inclinacao', (y * (i % 2 ? -.09 : .09)).toFixed(2) + 'deg');
