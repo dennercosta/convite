@@ -575,5 +575,268 @@ rsvpPopupForm?.addEventListener('submit', async event => {
   }
 });
 
-// Prévia estática: nenhum dado é enviado ou armazenado.
-$('rsvp').addEventListener('submit', event => event.preventDefault());
+// Encontro interativo: o convidado aproxima a noiva do noivo.
+const encontroCasal = $('encontro-casal');
+const casalPalco = $('casal-palco');
+const noivaArrastavel = $('noiva-arrastavel');
+const noivoDestino = $('noivo-destino');
+if (encontroCasal && casalPalco && noivaArrastavel && noivoDestino) {
+  let arrastando = false;
+  let ponteiroAtivo = null;
+  let inicioX = 0;
+  let inicioDeslocamento = 0;
+  let deslocamento = 0;
+
+  const limiteEncontro = () => Math.max(
+    0,
+    noivoDestino.offsetLeft - noivaArrastavel.offsetLeft - (noivaArrastavel.offsetWidth * .5)
+  );
+  const posicionarNoiva = valor => {
+    deslocamento = Math.max(0, Math.min(limiteEncontro(), valor));
+    casalPalco.style.setProperty('--arraste-noiva', `${deslocamento}px`);
+  };
+  const concluirEncontro = () => {
+    noivaArrastavel.classList.add('mover-suave');
+    posicionarNoiva(limiteEncontro());
+    encontroCasal.classList.add('unidos');
+    noivaArrastavel.setAttribute('aria-label', 'Noivos unidos sob a bênção de Deus');
+    text('encontro-status', 'Os noivos se encontraram sob a bênção de Deus.');
+    const instrucao = $('encontro-instrucao');
+    if (instrucao) instrucao.textContent = 'Juntos, sob a bênção de Deus';
+  };
+  const encerrarArraste = event => {
+    if (!arrastando || (ponteiroAtivo !== null && event.pointerId !== ponteiroAtivo)) return;
+    arrastando = false;
+    try { noivaArrastavel.releasePointerCapture(event.pointerId); } catch {}
+    ponteiroAtivo = null;
+    if (deslocamento >= limiteEncontro() * .7) {
+      concluirEncontro();
+    } else {
+      noivaArrastavel.classList.add('mover-suave');
+      posicionarNoiva(0);
+    }
+  };
+
+  noivaArrastavel.addEventListener('pointerdown', event => {
+    if (encontroCasal.classList.contains('unidos')) return;
+    arrastando = true;
+    ponteiroAtivo = event.pointerId;
+    inicioX = event.clientX;
+    inicioDeslocamento = deslocamento;
+    noivaArrastavel.classList.remove('mover-suave');
+    noivaArrastavel.setPointerCapture(event.pointerId);
+  });
+  noivaArrastavel.addEventListener('pointermove', event => {
+    if (!arrastando || event.pointerId !== ponteiroAtivo) return;
+    event.preventDefault();
+    posicionarNoiva(inicioDeslocamento + event.clientX - inicioX);
+  });
+  noivaArrastavel.addEventListener('pointerup', encerrarArraste);
+  noivaArrastavel.addEventListener('pointercancel', encerrarArraste);
+  noivaArrastavel.addEventListener('keydown', event => {
+    if (encontroCasal.classList.contains('unidos')) return;
+    const passo = Math.max(14, limiteEncontro() / 10);
+    if (event.key === 'ArrowRight') {
+      event.preventDefault();
+      posicionarNoiva(deslocamento + passo);
+      if (deslocamento >= limiteEncontro() * .7) concluirEncontro();
+    } else if (event.key === 'ArrowLeft') {
+      event.preventDefault();
+      posicionarNoiva(deslocamento - passo);
+    } else if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      concluirEncontro();
+    }
+  });
+  window.addEventListener('resize', () => {
+    if (encontroCasal.classList.contains('unidos')) posicionarNoiva(limiteEncontro());
+    else posicionarNoiva(0);
+  });
+}
+
+// Mural de recados público, com atualização automática e Supabase Realtime.
+const recadoForm = $('recado-form');
+const recadosTrack = $('recados-track');
+const recadosVazio = $('recados-vazio');
+const recadoAnterior = $('recado-anterior');
+const recadoProximo = $('recado-proximo');
+const recadosIndicador = $('recados-indicador');
+const recadosConfig = c.supabase || {};
+const recadosUrl = String(recadosConfig.url || '').replace(/\/$/, '');
+const recadosChave = String(recadosConfig.anonKey || '');
+const tabelaRecados = /^[a-z0-9_]+$/i.test(recadosConfig.tabelaRecados || '')
+  ? recadosConfig.tabelaRecados
+  : 'recados';
+let recadosDados = [];
+let indiceRecado = 0;
+let timerRecados;
+
+const recadoNormalizado = item => {
+  if (!item || !Number.isFinite(Number(item.id))) return null;
+  const nome = String(item.nome || '').trim().slice(0, 60);
+  const mensagem = String(item.mensagem || '').trim().slice(0, 360);
+  if (nome.length < 2 || mensagem.length < 3 || item.aprovado === false) return null;
+  return {
+    id: Number(item.id),
+    nome,
+    mensagem,
+    created_at: item.created_at || new Date().toISOString()
+  };
+};
+const exibirRecado = () => {
+  if (!recadosTrack || !recadosIndicador || !recadoAnterior || !recadoProximo) return;
+  if (!recadosDados.length) {
+    recadosTrack.replaceChildren();
+    if (recadosVazio) recadosVazio.hidden = false;
+    recadosIndicador.textContent = '0 / 0';
+    recadoAnterior.disabled = true;
+    recadoProximo.disabled = true;
+    return;
+  }
+  if (recadosVazio) recadosVazio.hidden = true;
+  indiceRecado = (indiceRecado + recadosDados.length) % recadosDados.length;
+  recadosTrack.style.transform = `translate3d(-${indiceRecado * 100}%,0,0)`;
+  recadosIndicador.textContent = `${indiceRecado + 1} / ${recadosDados.length}`;
+  recadoAnterior.disabled = recadosDados.length < 2;
+  recadoProximo.disabled = recadosDados.length < 2;
+};
+const reiniciarRotacaoRecados = () => {
+  window.clearInterval(timerRecados);
+  if (recadosDados.length > 1) {
+    timerRecados = window.setInterval(() => {
+      indiceRecado = (indiceRecado + 1) % recadosDados.length;
+      exibirRecado();
+    }, 7000);
+  }
+};
+const renderizarRecados = () => {
+  if (!recadosTrack) return;
+  recadosTrack.replaceChildren();
+  recadosDados.forEach(item => {
+    const card = document.createElement('article');
+    card.className = 'recado-card';
+    const mensagem = document.createElement('blockquote');
+    mensagem.textContent = item.mensagem;
+    const rodape = document.createElement('footer');
+    const nome = document.createElement('strong');
+    nome.textContent = item.nome;
+    const data = document.createElement('time');
+    const instante = new Date(item.created_at);
+    data.dateTime = Number.isFinite(instante.getTime()) ? instante.toISOString() : '';
+    data.textContent = Number.isFinite(instante.getTime())
+      ? new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'long' }).format(instante)
+      : '';
+    rodape.append(nome, data);
+    card.append(mensagem, rodape);
+    recadosTrack.append(card);
+  });
+  exibirRecado();
+  reiniciarRotacaoRecados();
+};
+const adicionarRecado = item => {
+  const recado = recadoNormalizado(item);
+  if (!recado || recadosDados.some(atual => atual.id === recado.id)) return;
+  recadosDados.unshift(recado);
+  recadosDados = recadosDados.slice(0, 20);
+  indiceRecado = 0;
+  renderizarRecados();
+};
+const carregarRecados = async ({ silencioso = false } = {}) => {
+  if (!recadosTrack || !/^https:\/\//.test(recadosUrl) || !recadosChave) return;
+  try {
+    const resposta = await fetch(
+      `${recadosUrl}/rest/v1/${tabelaRecados}?select=id,nome,mensagem,created_at,aprovado&aprovado=eq.true&order=created_at.desc&limit=20`,
+      {
+        headers: {
+          apikey: recadosChave,
+          Authorization: `Bearer ${recadosChave}`
+        },
+        cache: 'no-store'
+      }
+    );
+    if (!resposta.ok) throw new Error('Mural indisponível');
+    const itens = await resposta.json();
+    recadosDados = itens.map(recadoNormalizado).filter(Boolean);
+    if (indiceRecado >= recadosDados.length) indiceRecado = 0;
+    renderizarRecados();
+  } catch {
+    if (!silencioso) {
+      const status = $('recado-status');
+      if (status) status.textContent = 'O mural está pronto e aguarda a ativação no Supabase.';
+    }
+  }
+};
+recadoAnterior?.addEventListener('click', () => {
+  indiceRecado -= 1;
+  exibirRecado();
+  reiniciarRotacaoRecados();
+});
+recadoProximo?.addEventListener('click', () => {
+  indiceRecado += 1;
+  exibirRecado();
+  reiniciarRotacaoRecados();
+});
+recadoForm?.addEventListener('submit', async event => {
+  event.preventDefault();
+  const status = $('recado-status');
+  const botao = $('recado-enviar');
+  const dados = new FormData(recadoForm);
+  if (dados.get('website')) return;
+  const nome = String(dados.get('nome') || '').trim();
+  const mensagem = String(dados.get('mensagem') || '').trim();
+  if (nome.length < 2 || nome.length > 60 || mensagem.length < 3 || mensagem.length > 360) {
+    if (status) status.textContent = 'Confira seu nome e escreva um recado de até 360 caracteres.';
+    return;
+  }
+  if (!/^https:\/\//.test(recadosUrl) || !recadosChave) {
+    if (status) status.textContent = 'O mural ainda precisa ser conectado ao Supabase.';
+    return;
+  }
+  if (botao) botao.disabled = true;
+  if (status) status.textContent = 'Enviando seu recado…';
+  try {
+    const resposta = await fetch(
+      `${recadosUrl}/rest/v1/${tabelaRecados}?select=id,nome,mensagem,created_at,aprovado`,
+      {
+        method: 'POST',
+        headers: {
+          apikey: recadosChave,
+          Authorization: `Bearer ${recadosChave}`,
+          'Content-Type': 'application/json',
+          Prefer: 'return=representation'
+        },
+        body: JSON.stringify({ nome, mensagem })
+      }
+    );
+    if (!resposta.ok) throw new Error('Falha ao registrar recado');
+    const criado = (await resposta.json())[0];
+    adicionarRecado(criado);
+    recadoForm.reset();
+    if (status) status.textContent = 'Recado enviado com carinho! Ele já está no mural.';
+  } catch {
+    if (status) status.textContent = 'Não foi possível enviar. Verifique se a tabela de recados foi ativada no Supabase.';
+  } finally {
+    if (botao) botao.disabled = false;
+  }
+});
+
+if (recadosTrack) {
+  renderizarRecados();
+  carregarRecados();
+  window.setInterval(() => carregarRecados({ silencioso: true }), 20000);
+  if (/^https:\/\//.test(recadosUrl) && recadosChave && window.supabase?.createClient) {
+    try {
+      const clienteRecados = window.supabase.createClient(recadosUrl, recadosChave, {
+        auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false }
+      });
+      clienteRecados
+        .channel('mural-recados-publicos')
+        .on(
+          'postgres_changes',
+          { event: 'INSERT', schema: 'public', table: tabelaRecados },
+          payload => adicionarRecado(payload.new)
+        )
+        .subscribe();
+    } catch {}
+  }
+}
