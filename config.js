@@ -58,7 +58,8 @@ window.CASAMENTO = {
     url: "https://hrorbyvmpcaeadqnqioc.supabase.co",
     anonKey: "sb_publishable_Aapfyxf9NDxce_0Gj83jwg_l0JQVtRW",
     tabela: "confirmacoes",
-    tabelaPresentes: "presentes_reservados"
+    tabelaPresentes: "presentes_reservados",
+    tabelaRecados: "recados"
   },
   fotoCapa: "", // Ex.: /fotos/casal.jpg — coloque o arquivo em public/fotos/.
   fotos: [], // Ex.: [{ src: "/fotos/casal.jpg", legenda: "Nosso momento" }]
