@@ -2,7 +2,9 @@ const c = window.CASAMENTO;
 const $ = id => document.getElementById(id);
 const text = (id, value) => { const el = $(id); if (el) el.textContent = value; };
 function external(id, url) {
-  try { const parsed = new URL(url); if (parsed.protocol !== 'https:') return; $(id).href = parsed.href; $(id).hidden = false; } catch {}
+  const el = $(id);
+  if (!el) return;
+  try { const parsed = new URL(url); if (parsed.protocol !== 'https:') return; el.href = parsed.href; el.hidden = false; } catch {}
 }
 document.querySelectorAll('[data-noivos]').forEach(el => el.textContent = c.noivos);
 document.querySelectorAll('[data-iniciais]').forEach(el => el.textContent = c.iniciais);
@@ -95,7 +97,12 @@ if (c.dataISO && Number.isFinite(eventDate.getTime())) {
   const fmt = date => date.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
   const calendar = new URL('https://calendar.google.com/calendar/render');
   calendar.search = new URLSearchParams({ action: 'TEMPLATE', text: `Casamento — ${c.noivos}`, dates: `${fmt(eventDate)}/${fmt(new Date(eventDate.getTime() + 3600000))}`, location: `${evento.local} ${evento.endereco}`, details: 'Confira a programação no convite. Duração de 1 hora na agenda é apenas uma reserva inicial.' });
-  external('calendario', calendar.href); $('calendario').target = '_blank'; $('calendario').rel = 'noopener';
+  const calendarLink = $('calendario');
+  if (calendarLink) {
+    external('calendario', calendar.href);
+    calendarLink.target = '_blank';
+    calendarLink.rel = 'noopener';
+  }
 }
 // Sem horário confirmado, contamos dias do calendário no fuso do casamento.
 // Assim não atribuímos um horário fictício à cerimônia.
