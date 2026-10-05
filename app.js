@@ -1,3 +1,71 @@
+
+// Efeitos locais e leves, sem downloads de áudio.
+const sonsConvite = (() => {
+  let ctx, master, ambiente, ativo = false, cenaVisivel = false, liberado = false;
+  const botao = () => document.getElementById('sons-convite');
+  function preparar() {
+    if (!ctx) {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContext) return false;
+      ctx = new AudioContext(); master = ctx.createGain(); master.gain.value = .65; master.connect(ctx.destination);
+    }
+    return true;
+  }
+  function ruido(duracao, volume, frequencia, quando = 0, ataque = .015) {
+    if (!ativo || !ctx || document.hidden) return;
+    const buffer = ctx.createBuffer(1, Math.ceil(ctx.sampleRate * duracao), ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+    const fonte = ctx.createBufferSource(), filtro = ctx.createBiquadFilter(), ganho = ctx.createGain();
+    fonte.buffer = buffer; filtro.type = 'bandpass'; filtro.frequency.value = frequencia; filtro.Q.value = .6;
+    const t = ctx.currentTime + quando;
+    ganho.gain.setValueAtTime(0, t); ganho.gain.linearRampToValueAtTime(volume, t + ataque);
+    ganho.gain.exponentialRampToValueAtTime(.0001, t + duracao);
+    fonte.connect(filtro); filtro.connect(ganho); ganho.connect(master);
+    fonte.start(t); fonte.stop(t + duracao);
+  }
+  function atualizarAmbiente() {
+    if (!ctx) return;
+    if (!ambiente) {
+      const buffer = ctx.createBuffer(1, ctx.sampleRate * 4, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      let anterior = 0;
+      for (let i = 0; i < data.length; i++) { anterior = (anterior + .025 * (Math.random() * 2 - 1)) / 1.025; data[i] = anterior * 5; }
+      const fonte = ctx.createBufferSource(), filtro = ctx.createBiquadFilter();
+      fonte.buffer = buffer; fonte.loop = true; filtro.type = 'lowpass'; filtro.frequency.value = 1000;
+      ambiente = ctx.createGain(); ambiente.gain.value = 0;
+      fonte.connect(filtro); filtro.connect(ambiente); ambiente.connect(master); fonte.start();
+      const brisa = ctx.createOscillator(), variacao = ctx.createGain();
+      brisa.frequency.value = .18; variacao.gain.value = 180; brisa.connect(variacao); variacao.connect(filtro.frequency); brisa.start();
+    }
+    ambiente.gain.setTargetAtTime(ativo && liberado && cenaVisivel && !document.hidden ? .11 : 0, ctx.currentTime, .55);
+  }
+  function atualizarBotao() {
+    const b = botao(); if (!b) return;
+    b.hidden = false; b.setAttribute('aria-pressed', String(ativo));
+    b.setAttribute('aria-label', ativo ? 'Desativar efeitos sonoros' : 'Ativar efeitos sonoros');
+    b.textContent = ativo ? 'Som ligado' : 'Som desligado';
+  }
+  return {
+    iniciar() {
+      try { if (!preparar()) return; ativo = true; ctx.resume().catch(() => {}); atualizarBotao(); } catch {}
+    },
+    abrir() { ruido(1.2, .16, 1800, 0, .15); ruido(.7, .075, 850, .35, .08); },
+    digitar() { ruido(.038, .045, 1600); },
+    palmas() { for (let i = 0; i < 26; i++) ruido(.12 + Math.random() * .07, .055 + Math.random() * .035, 1100 + Math.random() * 1400, i * .06 + Math.random() * .04); },
+    revelar() { liberado = true; atualizarAmbiente(); },
+    cena(valor) { cenaVisivel = valor; atualizarAmbiente(); },
+    alternar() { try { if (!preparar()) return; ativo = !ativo; ctx.resume().catch(() => {}); master.gain.setTargetAtTime(ativo ? .65 : 0, ctx.currentTime, .06); atualizarBotao(); atualizarAmbiente(); } catch {} },
+    visibilidade() { atualizarAmbiente(); }
+  };
+})();
+document.getElementById('sons-convite')?.addEventListener('click', () => sonsConvite.alternar());
+document.addEventListener('visibilitychange', () => sonsConvite.visibilidade());
+if ('IntersectionObserver' in window) {
+  const cenaSonora = document.querySelector('.apresentacao-arte');
+  if (cenaSonora) new IntersectionObserver(entries => sonsConvite.cena(entries[0].isIntersecting), { threshold: .18 }).observe(cenaSonora);
+} else sonsConvite.cena(true);
+
 const c = window.CASAMENTO;
 const $ = id => document.getElementById(id);
 const text = (id, value) => { const el = $(id); if (el) el.textContent = value; };
@@ -20,6 +88,8 @@ $('abrir').addEventListener('click', () => {
   const laco = $('laco');
   if (abertura.classList.contains('desatando') || abertura.classList.contains('abrindo')) return;
 
+  sonsConvite.iniciar();
+  sonsConvite.abrir();
   if (audio) audio.play().then(() => $('musica').setAttribute('aria-label', 'Pausar música')).catch(() => {});
 
   const reduzirMovimento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -34,6 +104,7 @@ $('abrir').addEventListener('click', () => {
     }, reduzirMovimento ? 0 : 320);
     window.setTimeout(() => {
       abertura.hidden = true;
+      sonsConvite.revelar();
       document.body.classList.remove('convite-fechado');
       $('conteudo').inert = false;
       $('conteudo').classList.remove('conteudo-revelando');
@@ -182,6 +253,7 @@ if (mensagemDigitada) {
         return;
       }
       const caractere = mensagemCompleta[indiceMensagem - 1];
+      if (indiceMensagem % 3 === 0 && caractere.trim()) sonsConvite.digitar();
       const pausa = caractere === '\n' ? 240 : /[.!?]/.test(caractere) ? 180 : /[,;]/.test(caractere) ? 85 : 24;
       window.setTimeout(digitar, pausa);
     };
@@ -501,6 +573,7 @@ presenteReservaForm?.addEventListener('submit', async event => {
     if (!presenteAtual.outro) presentesReservados.add(presenteAtual.id);
     $('presente-reserva-status').textContent = 'Presente reservado! Muito obrigado por fazer parte deste momento.';
     botao.textContent = 'Presente reservado ✓';
+    sonsConvite.palmas();
     retornoPresenteTimer = window.setTimeout(voltarParaListaPresentes, 2600);
   } catch {
     $('presente-reserva-status').textContent = 'Não foi possível reservar agora. Tente novamente em alguns instantes.';
