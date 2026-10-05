@@ -16,7 +16,7 @@ window.CASAMENTO = {
   historia: "", // Sua história verdadeira. A seção fica oculta enquanto estiver vazia.
   celebracao: { local: "Sítio Paraíso - Macaúba", endereco: "Nerópolis/GO", horario: "16:00", mapa: "https://maps.app.goo.gl/RWsbPRLrLQ8YapE16" }, // Cerimônia e recepção no mesmo local.
   traje: "", // Ex.: Esporte fino. Informe apenas o traje escolhido por vocês.
-  prazoConfirmacao: "01 de novembro de 2026",
+  prazoConfirmacao: "15 de outubro de 2026",
   pix: { chave: "+5562981119599", chaveExibicao: "(62) 98111-9599", titular: "NAGILA HEVELLEN SILVA DE LIMA", banco: "Banco C6 S.A" },
   listaPresentes: "", // URL https:// da lista, se houver.
   presentes: [
