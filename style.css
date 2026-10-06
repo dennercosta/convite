@@ -1859,3 +1859,6 @@ main{overflow-x:clip}
 @keyframes flor-brisa{from{transform:rotate(-1deg)}to{transform:rotate(1deg)}}
 @media(min-width:700px){.flor-paralaxe{width:170px;height:200px;left:-120px;top:-95px}.intervalo-floral-2 .flor-paralaxe,.intervalo-floral-4 .flor-paralaxe{right:-120px}}
 @media(prefers-reduced-motion:reduce){.flor-paralaxe{transform:none;will-change:auto}.flor-entre-secoes,.flor-revelada .flor-entre-secoes{opacity:.82;transform:none;transition:none;animation:none}}
+
+/* Os controles de áudio retornam ao fechar qualquer pop-up. */
+body.modal-aberto .sons-convite,body.modal-aberto .musica{display:none!important}
