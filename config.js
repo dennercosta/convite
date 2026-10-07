@@ -50,7 +50,10 @@ window.CASAMENTO = {
     { id: "presente-28", nome: "Churrasqueira elétrica", imagem: "./assets/presentes/28-churrasqueira-eletrica.webp" },
     { id: "presente-29", nome: "Jogo de toalhas", imagem: "./assets/presentes/29-jogo-toalhas.webp" },
     { id: "presente-30", nome: "Sapateira", imagem: "./assets/presentes/30-sapateira.webp" },
-    { id: "presente-31", nome: "Colcha", imagem: "./assets/presentes/31-colcha.webp" }
+    { id: "presente-31", nome: "Colcha", imagem: "./assets/presentes/31-colcha.webp" },
+    { id: "presente-32", nome: "Ferro de passar", imagem: "./assets/presentes/32-ferro-de-passar.webp" },
+    { id: "presente-33", nome: "Máquina de lavar", imagem: "./assets/presentes/33-maquina-de-lavar.webp" },
+    { id: "presente-34", nome: "Tábua de passar roupa", imagem: "./assets/presentes/34-tabua-de-passar-roupa.webp" }
   ],
   whatsapp: "", // DDI + DDD + número, apenas dígitos: 55...
   // A chave anon/publishable é pública por definição. Nunca use a service_role no site.
